@@ -13,8 +13,8 @@ export class AuthController {
     constructor(private authService: AuthService) {}
 
     @Get()
-    @UseGuards(AuthGuard(), RolesGuard)
     @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard(), RolesGuard)
     async getAll() {
         return await this.authService.getAuth();
     }

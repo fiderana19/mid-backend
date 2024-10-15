@@ -13,7 +13,7 @@ import { RolesGuard } from './guards/roles.guard';
       isGlobal: true,
       envFilePath: '.env'
     }),
-    MongooseModule.forRoot('mongodb://localhost/audience'),
+    MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
     AudienceModule, 
     RequestModule,
