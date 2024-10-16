@@ -8,6 +8,7 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
+    //Getting the roles in the decorator
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY , [
       context.getHandler(),
       context.getClass(),
@@ -17,6 +18,7 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
+    //Getting the user authenticated
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
@@ -28,6 +30,7 @@ export class RolesGuard implements CanActivate {
   }
 }
 
+//Match user role
 function matchRoles(requiredRoles: string[], userRole: string[]) {
   return requiredRoles.some((role: string) => userRole?.includes(role))
 }

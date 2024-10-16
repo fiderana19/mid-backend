@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Role } from "src/enums/role.enum";
 
 export class SignUpDto {
@@ -6,13 +6,40 @@ export class SignUpDto {
     @IsString()
     nom: string;
 
+    @IsOptional()
+    prenom: string;
+
     @IsNotEmpty()
     @IsEmail()
     email: string;
 
     @IsNotEmpty()
     @IsString()
+    telephone: string;
+
+    @IsNotEmpty()
+    date_naissance: Date;
+
+    @IsNotEmpty()
+    @IsString()
+    lieu_naissance: string;
+
+    @IsNotEmpty()
+    @IsString()
+    cni: string;
+
+    @IsNotEmpty()
+    date_cni: Date;
+
+    @IsNotEmpty()
+    @IsString()
+    lieu_cni: string;
+
+    @IsNotEmpty()
+    @IsString()
     password: string;
+
+    validation: boolean;
 
     roles: Role;
 }

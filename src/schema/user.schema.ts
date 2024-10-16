@@ -6,38 +6,38 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User extends Document {
-    @Prop({ required: true })
+    @Prop()
     nom: string;
 
-    @Prop({ required: false })
-    prenom: string;
+    @Prop()
+    prenom?: string;
 
-    @Prop({ required: true })
+    @Prop()
     email: string;
 
-    @Prop({ required: true })
-    telephone: string;
+    @Prop()
+    telephone?: string;
 
-    @Prop({ required: true })
-    date_naissance: Date;
+    @Prop()
+    date_naissance?: Date;
 
-    @Prop({ required: true })
-    lieu_naissance: string;
+    @Prop()
+    lieu_naissance?: string;
 
-    @Prop({ required: true })
-    cni: string;
+    @Prop()
+    cni?: string;
 
-    @Prop({ required: true })
-    date_cni: Date;
+    @Prop()
+    date_cni?: Date;
 
-    @Prop({ required: true })
-    lieu_cni: string;
+    @Prop()
+    lieu_cni?: string;
 
-    @Prop({ required: true })
+    @Prop()
     password: string;
 
-    @Prop({ required: true })
-    validation: boolean;
+    @Prop({ default: false })
+    validation?: boolean;
 
     @Prop({ 
         type: [{ type: String, enum: Role }], 

@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
+import { AvailabilityModule } from './availability/availability.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { RolesGuard } from './guards/roles.guard';
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
     AudienceModule, 
-    RequestModule,
+    RequestModule, 
+    AvailabilityModule,
   ],
   providers: [
     {
