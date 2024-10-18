@@ -3,7 +3,7 @@ import { Document, HydratedDocument } from 'mongoose';
 
 export type AvailabilityDocument = HydratedDocument<Availability>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Availability extends Document {
     @Prop({ required: true })
     hour_debut: Date;

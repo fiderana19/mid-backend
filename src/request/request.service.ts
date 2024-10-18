@@ -23,7 +23,6 @@ export class RequestService {
             user_nom: request.user ? request.user.nom : '',
             user_prenom: request.user ? request.user.prenom : '',
             user_cni: request.user ? request.user.cni : '',
-            date_request: request.date_request,
             type_request: request.type_request,
             object: request.object,
             date_wanted_debut: request.date_wanted_debut,

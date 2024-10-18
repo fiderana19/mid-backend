@@ -7,7 +7,7 @@ import { AudienceStatus } from "src/enums/audiencestatus.enum";
 
 export type AudienceDocument = HydratedDocument<Audience>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Audience extends Document {
     @Prop({ required: true })
     date_audience: Date;

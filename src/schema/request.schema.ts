@@ -6,11 +6,8 @@ import { RequestStatus } from "src/enums/requeststatuts.enum";
 
 export type RequestDocument = HydratedDocument<Request>;
 
-@Schema() 
+@Schema({ timestamps: true }) 
 export class Request extends Document {
-    @Prop({ required: true })
-    date_request: Date;
-
     @Prop({ 
         type: [{ type: String, enum: RequestType }],
         default: [RequestType.Information]

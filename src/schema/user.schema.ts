@@ -4,40 +4,40 @@ import { Role } from "src/enums/role.enum";
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class User extends Document {
     @Prop()
     nom: string;
 
     @Prop()
-    prenom?: string;
+    prenom: string;
 
     @Prop()
     email: string;
 
     @Prop()
-    telephone?: string;
+    telephone: string;
 
     @Prop()
-    date_naissance?: Date;
+    date_naissance: Date;
 
     @Prop()
-    lieu_naissance?: string;
+    lieu_naissance: string;
 
     @Prop()
-    cni?: string;
+    cni: string;
 
     @Prop()
-    date_cni?: Date;
+    date_cni: Date;
 
     @Prop()
-    lieu_cni?: string;
+    lieu_cni: string;
 
     @Prop()
     password: string;
 
     @Prop({ default: false })
-    validation?: boolean;
+    validation: boolean;
 
     @Prop({ 
         type: [{ type: String, enum: Role }], 
