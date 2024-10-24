@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { SignUpDto } from 'src/dto/sign-up.dto';
@@ -14,8 +14,8 @@ export class AuthController {
     constructor(private authService: AuthService) {}
 
     @Get('/all')
-    @Roles(Role.ADMIN)
-    @UseGuards(AuthGuard(), RolesGuard)
+    // @Roles(Role.ADMIN)
+    // @UseGuards(AuthGuard(), RolesGuard)
     async getAll() {
         return await this.authService.getAuth();
     }
@@ -26,10 +26,22 @@ export class AuthController {
         return await this.authService.getUserByValidation(validation);
     }
 
+    //Get user by id
+    @Get('/get/:id')
+    async getUserById(@Param('id') id: string) {
+        return await this.authService.getUserById(id);
+    }
+
     //Count user by validation
     @Get('/count/:validation')
     async countUserByValidation(@Param('validation') validation: boolean) {
         return await this.authService.countUserByValidation(validation);
+    }
+
+    //Count user by validation
+    @Get('/check/:email')
+    async checkUser(@Param('email') email: string) {
+        return await this.authService.checkUser(email);
     }
 
     //Create user

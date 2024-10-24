@@ -6,6 +6,7 @@ import { User } from 'src/schema/user.schema';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
+import moment from 'moment'
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
     ) {}
 
     //Get all user
-    async getAuth(): Promise<User[]> {
+    async getAuth(): Promise<any> {
         return await this.userModel.find().exec();
     }
 
@@ -65,7 +66,7 @@ export class AuthService {
             throw new UnauthorizedException('Invalid email or password');
         }
 
-        const token = await this.jwtService.sign({ id: user._id })
+        const token = await this.jwtService.sign({ id: user._id, role: user.roles })
 
         return { token };
     }
@@ -73,6 +74,22 @@ export class AuthService {
     //Validate user
     async validateUser(id: string, validateUserDto: ValidateUserDto) {
         return await this.userModel.findByIdAndUpdate(id, validateUserDto).exec();
+    }
+
+    //Get User by id
+    async getUserById(id: string) {
+        return await this.userModel.findById(id).exec();
+    }
+
+
+    //Check the user
+    async checkUser(email: string) {
+        const user = await this.userModel.find({ email }).exec();
+        if(user.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //Get user by validation
