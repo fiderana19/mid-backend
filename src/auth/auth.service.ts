@@ -6,7 +6,7 @@ import { User } from 'src/schema/user.schema';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
-import moment from 'moment'
+import { mapUser } from 'src/mappers/user.mapper';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,8 @@ export class AuthService {
 
     //Get all user
     async getAuth(): Promise<any> {
-        return await this.userModel.find().exec();
+        const users = await this.userModel.find().exec();
+        return mapUser(users);
     }
 
     //Signup
@@ -78,9 +79,9 @@ export class AuthService {
 
     //Get User by id
     async getUserById(id: string) {
-        return await this.userModel.findById(id).exec();
+        const users =  await this.userModel.findById(id).exec();
+        return mapUser(users);
     }
-
 
     //Check the user
     async checkUser(email: string) {
@@ -94,7 +95,8 @@ export class AuthService {
 
     //Get user by validation
     async getUserByValidation(validation: boolean) {
-        return await this.userModel.find({ validation }).exec();
+        const users = await this.userModel.find({ validation }).exec();
+        return mapUser(users);
     }
 
     //Count user by validation
