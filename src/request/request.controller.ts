@@ -31,6 +31,12 @@ export class RequestController {
     }
 
     //Get request by user
+    @Get('/get/:id')
+    async getRequestById(@Param('id') id: string) {
+        return await this.requestService.getRequestById(id);
+    }
+
+    //Get request by user
     @Get('/user/:id')
     async getRequestByUser(@Param('id') id: string) {
         return await this.requestService.getRequestByUser(id);

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TreatRequestDto } from 'src/dto/treat-request.dto';
 import { RequestStatus } from 'src/enums/requeststatuts.enum';
-import { mapRequest } from 'src/mappers/request.mapper';
+import { mapRequest, mapSingleRequest } from 'src/mappers/request.mapper';
 import { Request } from 'src/schema/request.schema';
 import { User } from 'src/schema/user.schema';
 
@@ -21,6 +21,13 @@ export class RequestService {
         const req = await this.requestModel.find().populate('user', 'nom prenom cni').exec();
 
         return mapRequest(req);
+    }
+
+    //Get request by id
+    async getRequestById(id: string): Promise<any> {        
+        const req = await this.requestModel.findById(id).populate('user', 'nom prenom cni').exec();
+    
+        return mapSingleRequest(req);
     }
 
     //Create request
