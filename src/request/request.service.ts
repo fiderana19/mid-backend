@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TreatRequestDto } from 'src/dto/treat-request.dto';
 import { RequestStatus } from 'src/enums/requeststatuts.enum';
+import { mapRequest } from 'src/mappers/request.mapper';
 import { Request } from 'src/schema/request.schema';
 import { User } from 'src/schema/user.schema';
 
@@ -19,16 +20,7 @@ export class RequestService {
     async getRequest(): Promise<any> {        
         const req = await this.requestModel.find().populate('user', 'nom prenom cni').exec();
 
-        return req.map((request) => ({
-            user_nom: request.user ? request.user.nom : '',
-            user_prenom: request.user ? request.user.prenom : '',
-            user_cni: request.user ? request.user.cni : '',
-            type_request: request.type_request,
-            object: request.object,
-            date_wanted_debut: request.date_wanted_debut,
-            date_wanted_end: request.date_wanted_end,
-            status_request: request.status_request,
-        }));
+        return mapRequest(req);
     }
 
     //Create request
@@ -40,7 +32,8 @@ export class RequestService {
 
     //Get request by user
     async getRequestByUser(user: string) {
-        return await this.requestModel.find({ user }).exec();
+        const req = await this.requestModel.find({ user }).exec();
+        return mapRequest(req);
     }
 
     //Count request by user

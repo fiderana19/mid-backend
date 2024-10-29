@@ -2,9 +2,6 @@ import { IsNotEmpty, IsString } from "class-validator";
 import { RequestType } from "src/enums/requesttype.enum";
 
 export class CreateRequestDto {
-    @IsNotEmpty()
-    date_request: Date;
-
     type_request: RequestType;
 
     @IsNotEmpty()
