@@ -5,10 +5,13 @@ export type AvailabilityDocument = HydratedDocument<Availability>;
 
 @Schema({ timestamps: true })
 export class Availability extends Document {
-    @Prop({ required: true })
+    @Prop()
+    date_availability: Date;
+
+    @Prop()
     hour_debut: Date;
 
-    @Prop({ required: true })
+    @Prop()
     hour_end: Date;
 }
 

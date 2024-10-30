@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Document, HydratedDocument } from "mongoose";
+import mongoose, { Document, HydratedDocument, now } from "mongoose";
 import { Request } from "./request.schema";
 import { Availability } from "./availability.schema";
 import { User } from "./user.schema";
@@ -9,7 +9,10 @@ export type AudienceDocument = HydratedDocument<Audience>;
 
 @Schema({ timestamps: true })
 export class Audience extends Document {
-    @Prop({ required: true })
+    @Prop({ default: now() })
+    audience_creation: Date;
+
+    @Prop()
     date_audience: Date;
 
     @Prop({ 
