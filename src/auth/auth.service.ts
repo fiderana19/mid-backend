@@ -6,7 +6,7 @@ import { User } from 'src/schema/user.schema';
 import * as bcrypt from 'bcrypt'
 import { JwtService } from '@nestjs/jwt';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
-import { mapUser, formatDate } from 'src/mappers/user.mapper';
+import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 
 @Injectable()
 export class AuthService {
@@ -81,21 +81,7 @@ export class AuthService {
     //Get User by id
     async getUserById(id: string) {
         const user =  await this.userModel.findById(id).exec();
-        return {
-            _id: user._id,
-            nom: user.nom,
-            prenom: user.prenom,
-            email: user.email,
-            telephone: user.telephone,
-            date_naissance: formatDate(user.date_naissance),
-            lieu_naissance: user.lieu_naissance,
-            cni: user.cni,
-            date_cni: formatDate(user.date_cni),
-            lieu_cni: user.lieu_cni,
-            user_creation: formatDate(user.user_creation),
-            validation: user.validation,
-        }
-        // return mapUser(users);
+        return mapSingleUser(user);
     }
 
     //Check the user

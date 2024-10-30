@@ -21,6 +21,20 @@ export class AvailabilityController {
         return await this.availabilityService.createAvailability(createAvailability);
     }
 
+    //Treat request
+    @Patch('/status/:id')
+    async updateAvailabilityStatus(@Param('id') id: string, @Body() treatRequestDto: UpdateAvailabilityDto) {
+        return await this.availabilityService.updateAvailabilityStatus(id, treatRequestDto);
+    }
+
+    //Get availability by id
+    @Patch('/get/:id')
+    async getAvailabilityById(
+        @Param('id') id: string,
+    ) {
+        return await this.availabilityService.getAllAvailabilityById(id);
+    }
+
     //Update availability
     @Patch('/update/:id')
     async updateAvailability(

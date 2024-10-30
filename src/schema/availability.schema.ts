@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, HydratedDocument } from 'mongoose';
+import { AvailabilityStatus } from '../enums/availability.enum';
 
 export type AvailabilityDocument = HydratedDocument<Availability>;
 
@@ -13,6 +14,12 @@ export class Availability extends Document {
 
     @Prop()
     hour_end: Date;
+
+    @Prop({ 
+        type: [{ type: String, enum: AvailabilityStatus }],
+        default: [AvailabilityStatus.Available]
+    })
+    status_available: AvailabilityStatus;
 }
 
 export const AvailabilitySchema = SchemaFactory.createForClass(Availability);
