@@ -14,13 +14,13 @@ export class Request extends Document {
      })
     type_request: RequestType;
 
-    @Prop({ required: true })
+    @Prop()
     object: string;
 
-    @Prop({ required: true })
+    @Prop()
     date_wanted_debut: Date;
 
-    @Prop({ required: true })
+    @Prop()
     date_wanted_end: Date;
 
     @Prop({ default: now() })
