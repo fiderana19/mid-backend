@@ -11,10 +11,10 @@ import { User, UserSchema } from 'src/schema/user.schema';
     AuthModule,
     MongooseModule.forFeature([
       { name: Request.name, schema: RequestSchema },
-      { name: User.name, schema: UserSchema }
-    ])
+      { name: User.name, schema: UserSchema },
+    ]),
   ],
   controllers: [RequestController],
-  providers: [RequestService]
+  providers: [RequestService],
 })
 export class RequestModule {}

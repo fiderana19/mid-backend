@@ -3,115 +3,133 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { User } from 'src/schema/user.schema';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @InjectModel(User.name) 
-        private userModel: Model<User>,
-        private jwtService: JwtService
-    ) {}
+  constructor(
+    @InjectModel(User.name)
+    private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
 
-    //Get all user
-    async getAuth(): Promise<any> {
-        const users = await this.userModel.find().exec();
-        return mapUser(users);
+  //Get all user
+  async getAuth(): Promise<any> {
+    const users = await this.userModel.find().exec();
+    return mapUser(users);
+  }
+
+  //Signup
+  async signUp(signUpDto): Promise<any> {
+    const {
+      nom,
+      prenom,
+      email,
+      telephone,
+      date_naissance,
+      lieu_naissance,
+      cni,
+      date_cni,
+      lieu_cni,
+      password,
+    } = signUpDto;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await this.userModel.create({
+      nom,
+      prenom,
+      email,
+      telephone,
+      date_naissance,
+      lieu_naissance,
+      cni,
+      date_cni,
+      lieu_cni,
+      password: hashedPassword,
+    });
+
+    return { message: 'Les informations sont envoyés avec succés' };
+  }
+
+  //Login
+  async login(loginDto): Promise<{ token: string }> {
+    const { email, password } = loginDto;
+    console.log(email, password);
+
+    const user = await this.userModel.findOne({ email });
+
+    //If the user didn't exist
+    if (!user) {
+      throw new UnauthorizedException('Invalid email');
     }
 
-    //Signup
-    async signUp(signUpDto): Promise<any> {
-        const { nom, prenom, email, telephone, date_naissance, lieu_naissance, cni, date_cni, lieu_cni, password } = signUpDto;
-
-        const hashedPassword = await bcrypt.hash(password,10);
-
-        await this.userModel.create({
-            nom, 
-            prenom, 
-            email, 
-            telephone, 
-            date_naissance, 
-            lieu_naissance, 
-            cni, 
-            date_cni, 
-            lieu_cni, 
-            password: hashedPassword
-        })
-
-        return { message: "Les informations sont envoyés avec succés" };
+    //Testing the user validation
+    if (!user.validation) {
+      throw new UnauthorizedException(
+        "Votre compte n'est pas encore validé par l'administrateur",
+      );
     }
 
-    //Login
-    async login(loginDto): Promise<{ token: string }> {
-        const { email, password } = loginDto;
-        console.log(email, password)
+    //Matching the password
+    const isPasswordMatched = await bcrypt.compare(password, user.password);
 
-        const user = await this.userModel.findOne({ email });
-
-        //If the user didn't exist
-        if(!user) {
-            throw new UnauthorizedException('Invalid email');
-        }
-
-        //Testing the user validation
-        if(!user.validation) {
-            throw new UnauthorizedException("Votre compte n'est pas encore validé par l'administrateur");
-        }
-
-        //Matching the password
-        const isPasswordMatched = await bcrypt.compare(password, user.password);
-
-        if(!isPasswordMatched) {
-            throw new UnauthorizedException('Invalid email or password');
-        }
-
-        const token = await this.jwtService.sign({ id: user._id, role: user.roles })
-
-        return { token };
+    if (!isPasswordMatched) {
+      throw new UnauthorizedException('Invalid email or password');
     }
 
-    //Validate user
-    async validateUser(id: string, validateUserDto: ValidateUserDto) {
-        return await this.userModel.findByIdAndUpdate(id, validateUserDto).exec();
-    }
+    const token = await this.jwtService.sign({
+      id: user._id,
+      role: user.roles,
+    });
 
-    //Get User by id
-    async getUserById(id: string) {
-        const user =  await this.userModel.findById(id).exec();
-        return mapSingleUser(user);
-    }
+    return { token };
+  }
 
-    //Check the user
-    async checkUser(email: string) {
-        const user = await this.userModel.find({ email }).exec();
-        if(user.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+  //Validate user
+  async validateUser(id: string, validateUserDto: ValidateUserDto) {
+    return await this.userModel.findByIdAndUpdate(id, validateUserDto).exec();
+  }
 
-    //Get user by validation
-    async getUserByValidation(validation: boolean) {
-        const users = await this.userModel.find({ validation }).exec();
-        return mapUser(users);
-    }
+  //Get User by id
+  async getUserById(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    return mapSingleUser(user);
+  }
 
-    //Count user by validation
-    async countUserByValidation(validation: boolean) {
-        return await this.userModel.find({ validation }).countDocuments().exec();
+  //Check the user
+  async checkUser(email: string) {
+    const user = await this.userModel.find({ email }).exec();
+    if (user.length > 0) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
-    //Update user
-    async updateUser(id: string, updateUser: UpdateUserDto) {
-        return await this.userModel.findByIdAndUpdate(id, updateUser, { new: true }).exec();
-    }
+  //Get user by validation
+  async getUserByValidation(validation: boolean) {
+    const users = await this.userModel.find({ validation }).exec();
+    return mapUser(users);
+  }
 
-    //Delete user
-    async deleteUser(id:string) {
-        return await this.userModel.findByIdAndDelete(id).exec();
-    }
+  //Count user by validation
+  async countUserByValidation(validation: boolean) {
+    return await this.userModel.find({ validation }).countDocuments().exec();
+  }
+
+  //Update user
+  async updateUser(id: string, updateUser: UpdateUserDto) {
+    return await this.userModel
+      .findByIdAndUpdate(id, updateUser, { new: true })
+      .exec();
+  }
+
+  //Delete user
+  async deleteUser(id: string) {
+    return await this.userModel.findByIdAndDelete(id).exec();
+  }
 }

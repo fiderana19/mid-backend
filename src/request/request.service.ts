@@ -9,84 +9,97 @@ import { User } from 'src/schema/user.schema';
 
 @Injectable()
 export class RequestService {
-    constructor(
-        @InjectModel(Request.name)
-        private requestModel: Model<Request>,
-        @InjectModel(User.name)
-        private userModel: Model<User>
-    ) {}
+  constructor(
+    @InjectModel(Request.name)
+    private requestModel: Model<Request>,
+    @InjectModel(User.name)
+    private userModel: Model<User>,
+  ) {}
 
-    //Get all request
-    async getRequest(): Promise<any> {        
-        const req = await this.requestModel.find().populate('user', 'nom prenom cni').exec();
+  //Get all request
+  async getRequest(): Promise<any> {
+    const req = await this.requestModel
+      .find()
+      .populate('user', 'nom prenom cni')
+      .exec();
 
-        return mapRequest(req);
+    return mapRequest(req);
+  }
+
+  //Get request by id
+  async getRequestById(id: string): Promise<any> {
+    const req = await this.requestModel
+      .findById(id)
+      .populate('user', 'nom prenom cni')
+      .exec();
+
+    return mapSingleRequest(req);
+  }
+
+  //Create request
+  async createRequest(createRequestDto, user: User) {
+    const data = Object.assign(createRequestDto, { user: user._id });
+
+    return await this.requestModel.create(data);
+  }
+
+  //Get request by user
+  async getRequestByUser(user: string) {
+    const req = await this.requestModel.find({ user }).exec();
+    return mapRequest(req);
+  }
+
+  //Count request by user
+  async countRequestByUser(user: string) {
+    return await this.requestModel.find({ user }).countDocuments().exec();
+  }
+
+  //Treat request
+  async treatRequest(id: string, treatRequestDto) {
+    return await this.requestModel
+      .findByIdAndUpdate(id, treatRequestDto, { new: true })
+      .exec();
+  }
+
+  //Update request
+  async updateRequest(id: string, updateRequestDto) {
+    const requete = await this.requestModel.findById(id);
+
+    if (requete.status_request == RequestStatus.Accepted) {
+      throw new UnauthorizedException('Ce demande est déjà approuvée');
     }
 
-    //Get request by id
-    async getRequestById(id: string): Promise<any> {        
-        const req = await this.requestModel.findById(id).populate('user', 'nom prenom cni').exec();
-    
-        return mapSingleRequest(req);
+    return await this.requestModel
+      .findByIdAndUpdate(id, updateRequestDto, { new: true })
+      .exec();
+  }
+
+  //Delete request
+  async deleteRequest(id: string) {
+    const requete = await this.requestModel.findById(id);
+
+    if (requete.status_request == RequestStatus.Accepted) {
+      throw new UnauthorizedException('Ce demande est déjà approuvée');
     }
 
-    //Create request
-    async createRequest(createRequestDto, user: User) {
-        const data = Object.assign(createRequestDto, { user: user._id })
+    return await this.requestModel.findByIdAndDelete(id).exec();
+  }
 
-        return await this.requestModel.create(data);
-    }
+  //Get request by status
+  async getRequestByStatus(status_request: string) {
+    return await this.requestModel.find({ status_request }).exec();
+  }
 
-    //Get request by user
-    async getRequestByUser(user: string) {
-        const req = await this.requestModel.find({ user }).exec();
-        return mapRequest(req);
-    }
+  //Count all request
+  async countAllRequest() {
+    return await this.requestModel.countDocuments().exec();
+  }
 
-    //Count request by user
-    async countRequestByUser(user: string) {
-        return await this.requestModel.find({ user }).countDocuments().exec();
-    }
-
-    //Treat request
-    async treatRequest(id: string, treatRequestDto) {
-        return await this.requestModel.findByIdAndUpdate(id, treatRequestDto, { new: true }).exec(); 
-    }
-
-    //Update request
-    async updateRequest(id: string, updateRequestDto) {
-        const requete = await this.requestModel.findById(id);
-
-        if(requete.status_request == RequestStatus.Accepted) {
-            throw new UnauthorizedException("Ce demande est déjà approuvée");
-        }
-
-        return await this.requestModel.findByIdAndUpdate(id, updateRequestDto, { new: true }).exec();
-    }
-
-    //Delete request
-    async deleteRequest(id: string) {
-        const requete = await this.requestModel.findById(id);
-
-        if(requete.status_request == RequestStatus.Accepted) {
-            throw new UnauthorizedException("Ce demande est déjà approuvée");
-        }
-
-        return await this.requestModel.findByIdAndDelete(id).exec();
-    }
-
-    //Get request by status
-    async getRequestByStatus(status_request: string) {
-        return await this.requestModel.find({ status_request }).exec();
-    }
-
-    //Count all request
-    async countAllRequest() {
-        return await this.requestModel.countDocuments().exec();
-    }
-
-    //Count request by status
-    async countRequestByStatus(status_request: string) {
-        return await this.requestModel.find({ status_request }).countDocuments().exec();
-    }
+  //Count request by status
+  async countRequestByStatus(status_request: string) {
+    return await this.requestModel
+      .find({ status_request })
+      .countDocuments()
+      .exec();
+  }
 }

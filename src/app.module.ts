@@ -12,19 +12,19 @@ import { AvailabilityModule } from './availability/availability.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
+      envFilePath: '.env',
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
-    AudienceModule, 
-    RequestModule, 
+    AudienceModule,
+    RequestModule,
     AvailabilityModule,
   ],
   providers: [
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
-    }
-  ]
+    },
+  ],
 })
 export class AppModule {}

@@ -1,45 +1,45 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Role } from "src/enums/role.enum";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Role } from 'src/enums/role.enum';
 
 export class SignUpDto {
-    @IsNotEmpty()
-    @IsString()
-    nom: string;
+  @IsNotEmpty()
+  @IsString()
+  nom: string;
 
-    @IsOptional()
-    prenom: string;
+  @IsOptional()
+  prenom: string;
 
-    @IsNotEmpty()
-    @IsEmail()
-    email: string;
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
-    @IsNotEmpty()
-    @IsString()
-    telephone: string;
+  @IsNotEmpty()
+  @IsString()
+  telephone: string;
 
-    @IsNotEmpty()
-    date_naissance: Date;
+  @IsNotEmpty()
+  date_naissance: Date;
 
-    @IsNotEmpty()
-    @IsString()
-    lieu_naissance: string;
+  @IsNotEmpty()
+  @IsString()
+  lieu_naissance: string;
 
-    @IsNotEmpty()
-    @IsString()
-    cni: string;
+  @IsNotEmpty()
+  @IsString()
+  cni: string;
 
-    @IsNotEmpty()
-    date_cni: Date;
+  @IsNotEmpty()
+  date_cni: Date;
 
-    @IsNotEmpty()
-    @IsString()
-    lieu_cni: string;
+  @IsNotEmpty()
+  @IsString()
+  lieu_cni: string;
 
-    @IsNotEmpty()
-    @IsString()
-    password: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 
-    validation: boolean;
+  validation: boolean;
 
-    roles: Role;
+  roles: Role;
 }

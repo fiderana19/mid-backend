@@ -1,4 +1,4 @@
 export enum AvailabilityStatus {
-    Available = "Disponible",
-    Occuped = "Occupé",
+  Available = 'Disponible',
+  Occuped = 'Occupé',
 }

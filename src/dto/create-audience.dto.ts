@@ -1,12 +1,12 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateAudienceDto {
-    @IsNotEmpty()
-    date_audience: Date;
+  @IsNotEmpty()
+  date_audience: Date;
 
-    request: string;
+  request: string;
 
-    availability: string;
+  availability: string;
 
-    user: string;
+  user: string;
 }

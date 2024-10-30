@@ -6,39 +6,43 @@ import { Availability } from 'src/schema/availability.schema';
 
 @Injectable()
 export class AvailabilityService {
-    constructor(
-        @InjectModel(Availability.name)
-        private availabilityModel: Model<Availability>,
-    ) {}
+  constructor(
+    @InjectModel(Availability.name)
+    private availabilityModel: Model<Availability>,
+  ) {}
 
-    //Get all availbility
-    async getAllAvailability(): Promise<Availability[]> {
-        const ava = await this.availabilityModel.find();
-        return mapAvailability(ava);
-    }
+  //Get all availbility
+  async getAllAvailability(): Promise<Availability[]> {
+    const ava = await this.availabilityModel.find();
+    return mapAvailability(ava);
+  }
 
-    //Change availability status
-    async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto) {
-        return await this.availabilityModel.findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true }).exec(); 
-    }
+  //Change availability status
+  async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto) {
+    return await this.availabilityModel
+      .findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true })
+      .exec();
+  }
 
-    //Get availbility by id
-    async getAllAvailabilityById(id: string): Promise<Availability> {
-        return await this.availabilityModel.findById(id);
-    }
+  //Get availbility by id
+  async getAllAvailabilityById(id: string): Promise<Availability> {
+    return await this.availabilityModel.findById(id);
+  }
 
-    //Create availability
-    async createAvailability(createAvailabilityDto) {
-        return await this.availabilityModel.create(createAvailabilityDto);
-    }
+  //Create availability
+  async createAvailability(createAvailabilityDto) {
+    return await this.availabilityModel.create(createAvailabilityDto);
+  }
 
-    //Update availability
-    async updateAvailability(id: string, updateAvailabilityDto) {
-        return await this.availabilityModel.findByIdAndUpdate(id, updateAvailabilityDto, { new: true }).exec();
-    }
+  //Update availability
+  async updateAvailability(id: string, updateAvailabilityDto) {
+    return await this.availabilityModel
+      .findByIdAndUpdate(id, updateAvailabilityDto, { new: true })
+      .exec();
+  }
 
-    //Delete availability
-    async deleteAvailability(id:string) {
-        return await this.availabilityModel.findByIdAndDelete(id).exec();
-    }
+  //Delete availability
+  async deleteAvailability(id: string) {
+    return await this.availabilityModel.findByIdAndDelete(id).exec();
+  }
 }

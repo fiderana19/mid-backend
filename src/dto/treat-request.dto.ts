@@ -1,5 +1,5 @@
-import { RequestStatus } from "src/enums/requeststatuts.enum";
+import { RequestStatus } from 'src/enums/requeststatuts.enum';
 
 export class TreatRequestDto {
-    status_request: RequestStatus;
+  status_request: RequestStatus;
 }

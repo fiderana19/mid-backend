@@ -4,7 +4,10 @@ import { AudienceService } from './audience.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
-import { Availability, AvailabilitySchema } from 'src/schema/availability.schema';
+import {
+  Availability,
+  AvailabilitySchema,
+} from 'src/schema/availability.schema';
 import { Request, RequestSchema } from 'src/schema/request.schema';
 import { User, UserSchema } from 'src/schema/user.schema';
 
@@ -16,9 +19,9 @@ import { User, UserSchema } from 'src/schema/user.schema';
       { name: Availability.name, schema: AvailabilitySchema },
       { name: Request.name, schema: RequestSchema },
       { name: User.name, schema: UserSchema },
-    ])
+    ]),
   ],
   controllers: [AudienceController],
-  providers: [AudienceService]
+  providers: [AudienceService],
 })
 export class AudienceModule {}
