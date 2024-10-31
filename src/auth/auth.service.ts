@@ -9,8 +9,7 @@ import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
-import { randomBytes, randomInt } from 'crypto';
-import { initializePassword } from '../../../mid-frontend/src/api/users';
+import { randomInt } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -22,12 +21,13 @@ export class AuthService {
 
   //Get all user
   async getAuth(): Promise<any> {
-    const users = await this.userModel.find().exec();
+    const users = await this.userModel.find({ roles: "user" }).exec();
     return mapUser(users);
   }
 
   //Signup
   async signUp(signUpDto): Promise<any> {
+    
     const {
       nom,
       prenom,
@@ -44,6 +44,7 @@ export class AuthService {
     const randomPassword = randomPwd.toString()
 
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
+    const hashedReal = hashedPassword.toString();
 
     await this.userModel.create({
       nom,
@@ -55,7 +56,7 @@ export class AuthService {
       cni,
       date_cni,
       lieu_cni,
-      password: hashedPassword,
+      password: hashedReal,
     });
 
     return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPwd };
@@ -136,12 +137,11 @@ export class AuthService {
 
   //Update user password for first login
   async initializePassword(id: string, updateUser: UpdateUserPasswordForFirstLogin) {
-    const { password, is_not_first_login } = updateUser;
-
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const { password } = updateUser;
+    const hashedPassword = await bcrypt.hash(password,10);
 
     return await this.userModel
-      .findByIdAndUpdate(id, { password: hashedPassword, is_not_first_login }, { new: true })
+      .findByIdAndUpdate(id, { password: hashedPassword, is_not_first_login: true }, { new: true })
       .exec();
   }
 
