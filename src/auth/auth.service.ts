@@ -7,6 +7,8 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
+import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
+import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -56,7 +58,7 @@ export class AuthService {
   }
 
   //Login
-  async login(loginDto): Promise<{ token: string }> {
+  async login(loginDto): Promise<any> {
     const { email, password } = loginDto;
     console.log(email, password);
 
@@ -81,12 +83,12 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const token = await this.jwtService.sign({
+    const acces_token = await this.jwtService.sign({
       id: user._id,
       role: user.roles,
     });
 
-    return { token };
+    return { token: acces_token, is_not_first_login: user.is_not_first_login };
   }
 
   //Validate user
@@ -123,6 +125,20 @@ export class AuthService {
 
   //Update user
   async updateUser(id: string, updateUser: UpdateUserDto) {
+    return await this.userModel
+      .findByIdAndUpdate(id, updateUser, { new: true })
+      .exec();
+  }
+
+  //Update user password for first login
+  async updateUserPasswordForFirstLogin(id: string, updateUser: UpdateUserPasswordForFirstLogin) {
+    return await this.userModel
+      .findByIdAndUpdate(id, updateUser, { new: true })
+      .exec();
+  }
+
+  //Update user password
+  async updateUserPassword(id: string, updateUser: UpdateUserPassword) {
     return await this.userModel
       .findByIdAndUpdate(id, updateUser, { new: true })
       .exec();
