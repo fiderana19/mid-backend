@@ -2,6 +2,7 @@ import { formatDate } from '../utils/dateformatter';
 
 export const mapRequest = (requests: any) => {
   return requests.map((request) => ({
+    user: request.user ? request.user._id : '',
     user_nom: request.user ? request.user.nom : '',
     user_prenom: request.user ? request.user.prenom : '',
     user_cni: request.user ? request.user.cni : '',
@@ -17,6 +18,7 @@ export const mapRequest = (requests: any) => {
 
 export const mapSingleRequest = (request: any) => {
   return {
+    user: request.user ? request.user._id : '',
     user_nom: request.user ? request.user.nom : '',
     user_prenom: request.user ? request.user.prenom : '',
     user_cni: request.user ? request.user.cni : '',

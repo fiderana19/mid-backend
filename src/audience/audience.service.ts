@@ -12,7 +12,19 @@ export class AudienceService {
 
   //Get all audience
   async getAllAudience() {
-    return await this.audienceModel.find();
+    const audiences = await this.audienceModel.find()
+      .populate('user', 'nom')
+      .populate('availability','date_availability')
+      .populate('request','object')
+      .exec();
+    return audiences.map((audi)=> {
+      return({
+        audi_status: audi.status_audience,
+        avaial: audi.availability ? audi.availability.date_availability : '',
+        usr: audi.user ? audi.user.nom : '',
+        reqhureh: audi.request ? audi.request.object : '',
+      })
+    })
   }
 
   //Create audience

@@ -20,7 +20,7 @@ export class RequestService {
   async getRequest(): Promise<any> {
     const req = await this.requestModel
       .find()
-      .populate('user', 'nom prenom cni')
+      .populate('user', '_id nom prenom cni')
       .exec();
 
     return mapRequest(req);
@@ -30,7 +30,7 @@ export class RequestService {
   async getRequestById(id: string): Promise<any> {
     const req = await this.requestModel
       .findById(id)
-      .populate('user', 'nom prenom cni')
+      .populate('user', '_id nom prenom cni')
       .exec();
 
     return mapSingleRequest(req);

@@ -19,7 +19,7 @@ export class Availability extends Document {
     type: [{ type: String, enum: AvailabilityStatus }],
     default: [AvailabilityStatus.Available],
   })
-  status_available: AvailabilityStatus;
+  status_availability: AvailabilityStatus;
 }
 
 export const AvailabilitySchema = SchemaFactory.createForClass(Availability);
