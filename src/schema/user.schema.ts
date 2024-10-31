@@ -39,6 +39,9 @@ export class User extends Document {
   @Prop({ default: false })
   validation: boolean;
 
+  @Prop({ default: false })
+  is_not_first_login: boolean;
+
   @Prop({ default: now() })
   user_creation: Date;
 

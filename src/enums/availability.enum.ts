@@ -1,4 +1,5 @@
 export enum AvailabilityStatus {
-  Available = 'Disponible',
+  Available = 'Libre',
   Occuped = 'Occupé',
+  Canceled = "Annulé",
 }
