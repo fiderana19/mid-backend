@@ -18,6 +18,8 @@ import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
+import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
+import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -73,6 +75,24 @@ export class AuthController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return await this.authService.updateUser(id, updateUserDto);
+  }
+
+  //Update user password for first login
+  @Patch('/first/password/:id')
+  async initializePassword(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserPasswordForFirstLogin,
+  ) {
+    return await this.authService.initializePassword(id, updateUserDto);
+  }
+
+  //Update user password
+  @Patch('/password/:id')
+  async updateUserPassword(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserPassword,
+  ) {
+    return await this.authService.updateUserPassword(id, updateUserDto);
   }
 
   //Validate user

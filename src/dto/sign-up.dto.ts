@@ -35,10 +35,6 @@ export class SignUpDto {
   @IsString()
   lieu_cni: string;
 
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-
   validation: boolean;
 
   roles: Role;

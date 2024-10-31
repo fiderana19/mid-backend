@@ -9,6 +9,8 @@ import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
+import { randomBytes, randomInt } from 'crypto';
+import { initializePassword } from '../../../mid-frontend/src/api/users';
 
 @Injectable()
 export class AuthService {
@@ -36,10 +38,12 @@ export class AuthService {
       cni,
       date_cni,
       lieu_cni,
-      password,
     } = signUpDto;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const randomPwd = randomInt(0,9);
+    const randomPassword = randomPwd.toString()
+
+    const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
     await this.userModel.create({
       nom,
@@ -54,7 +58,7 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    return { message: 'Les informations sont envoyés avec succés' };
+    return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPwd };
   }
 
   //Login
@@ -131,16 +135,24 @@ export class AuthService {
   }
 
   //Update user password for first login
-  async updateUserPasswordForFirstLogin(id: string, updateUser: UpdateUserPasswordForFirstLogin) {
+  async initializePassword(id: string, updateUser: UpdateUserPasswordForFirstLogin) {
+    const { password, is_not_first_login } = updateUser;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     return await this.userModel
-      .findByIdAndUpdate(id, updateUser, { new: true })
+      .findByIdAndUpdate(id, { password: hashedPassword, is_not_first_login }, { new: true })
       .exec();
   }
 
   //Update user password
   async updateUserPassword(id: string, updateUser: UpdateUserPassword) {
+    const { password } = updateUser;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     return await this.userModel
-      .findByIdAndUpdate(id, updateUser, { new: true })
+      .findByIdAndUpdate(id, { password: hashedPassword }, { new: true })
       .exec();
   }
 
