@@ -14,13 +14,15 @@ export class AudienceService {
   async getAllAudience() {
     const audiences = await this.audienceModel.find()
       .populate('user', 'nom')
-      .populate('availability','date_availability')
+      .populate('availability','date_availability hour_debut hour_end')
       .populate('request','object')
       .exec();
     return audiences.map((audi)=> {
       return({
         audi_status: audi.status_audience,
-        avaial: audi.availability ? audi.availability.date_availability : '',
+        availability_date: audi.availability ? audi.availability.date_availability : '',
+        availability_hour_debut: audi.availability ? audi.availability.hour_debut : '',
+        availability_hour_end: audi.availability ? audi.availability.hour_end : '',
         usr: audi.user ? audi.user.nom : '',
         reqhureh: audi.request ? audi.request.object : '',
       })
