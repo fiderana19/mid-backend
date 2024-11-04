@@ -12,6 +12,7 @@ import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-fi
 import { randomInt } from 'crypto';
 import { RequestService } from 'src/request/request.service';
 import { AudienceService } from 'src/audience/audience.service';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
     private jwtService: JwtService,
     private requestService: RequestService,
     private audienceService: AudienceService,
+    private mailerService: MailerService,
   ) {}
 
   //Get all user

@@ -11,6 +11,7 @@ import { Request, RequestSchema } from 'src/schema/request.schema';
 import { RequestService } from 'src/request/request.service';
 import { AudienceService } from 'src/audience/audience.service';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -25,6 +26,15 @@ import { Audience, AudienceSchema } from 'src/schema/audience.schema';
           },
         };
       },
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: process.env.EMAIL_HOST,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD,
+        }
+      }
     }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
