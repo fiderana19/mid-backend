@@ -68,4 +68,11 @@ export class AudienceService {
   async countAudienceByUser(user) {
     return await this.audienceModel.find({ user }).countDocuments().exec();
   }
+
+  //Delete request by user id
+  async deleteManyAudienceByUserId(user: string) {
+    await this.audienceModel
+      .deleteMany({ user })
+      .exec();
+  }
 }

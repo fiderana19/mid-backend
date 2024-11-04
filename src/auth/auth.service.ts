@@ -10,6 +10,8 @@ import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 import { randomInt } from 'crypto';
+import { RequestService } from 'src/request/request.service';
+import { AudienceService } from 'src/audience/audience.service';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +19,8 @@ export class AuthService {
     @InjectModel(User.name)
     private userModel: Model<User>,
     private jwtService: JwtService,
+    private requestService: RequestService,
+    private audienceService: AudienceService,
   ) {}
 
   //Get all user
@@ -158,6 +162,9 @@ export class AuthService {
 
   //Delete user
   async deleteUser(id: string) {
+    await this.requestService.deleteManyRequestByUserId(id);
+    await this.audienceService.deleteManyAudienceByUserId(id);
+    
     return await this.userModel.findByIdAndDelete(id).exec();
   }
 }
