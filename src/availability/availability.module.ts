@@ -7,15 +7,19 @@ import {
   Availability,
   AvailabilitySchema,
 } from 'src/schema/availability.schema';
+import { AudienceService } from 'src/audience/audience.service';
+import { Audience, AudienceSchema } from 'src/schema/audience.schema';
 
 @Module({
   imports: [
     AuthModule,
     MongooseModule.forFeature([
       { name: Availability.name, schema: AvailabilitySchema },
+      { name: Audience.name, schema: AudienceSchema },
     ]),
   ],
   controllers: [AvailabilityController],
-  providers: [AvailabilityService],
+  providers: [AvailabilityService, AudienceService],
+  exports: [AvailabilityService],
 })
 export class AvailabilityModule {}

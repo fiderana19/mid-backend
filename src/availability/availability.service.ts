@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AudienceService } from 'src/audience/audience.service';
 import { mapAvailability } from 'src/mappers/availability.mapper';
 import { Availability } from 'src/schema/availability.schema';
 
@@ -9,6 +10,7 @@ export class AvailabilityService {
   constructor(
     @InjectModel(Availability.name)
     private availabilityModel: Model<Availability>,
+    private audienceService: AudienceService,
   ) {}
 
   //Get all availbility
@@ -19,6 +21,10 @@ export class AvailabilityService {
 
   //Change availability status
   async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto) {
+    console.log(updateAvailabilityStatusDto);
+    if(updateAvailabilityStatusDto.status_availability === "Annulé") {
+      await this.audienceService.cancelAudience(id);
+    }
     return await this.availabilityModel
       .findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true })
       .exec();

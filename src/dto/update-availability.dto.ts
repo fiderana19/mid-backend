@@ -1,12 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
+import { AvailabilityStatus } from 'src/enums/availability.enum';
 
 export class UpdateAvailabilityDto {
   @IsNotEmpty()
-  date_availability: Date;
-
-  @IsNotEmpty()
-  hour_debut: Date;
-
-  @IsNotEmpty()
-  hour_end: Date;
+  status_availability: AvailabilityStatus;
 }

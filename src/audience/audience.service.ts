@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { mapAudience } from 'src/mappers/audience.mapper';
 import { Audience } from 'src/schema/audience.schema';
 
 @Injectable()
@@ -13,20 +14,11 @@ export class AudienceService {
   //Get all audience
   async getAllAudience() {
     const audiences = await this.audienceModel.find()
-      .populate('user', 'nom')
-      .populate('availability','date_availability hour_debut hour_end')
-      .populate('request','object')
+      .populate('user', '_id nom prenom email cni')
+      .populate('availability','_id date_availability hour_debut hour_end')
+      .populate('request','_id object type_request')
       .exec();
-    return audiences.map((audi)=> {
-      return({
-        audi_status: audi.status_audience,
-        availability_date: audi.availability ? audi.availability.date_availability : '',
-        availability_hour_debut: audi.availability ? audi.availability.hour_debut : '',
-        availability_hour_end: audi.availability ? audi.availability.hour_end : '',
-        usr: audi.user ? audi.user.nom : '',
-        reqhureh: audi.request ? audi.request.object : '',
-      })
-    })
+    return mapAudience(audiences);
   }
 
   //Create audience
@@ -74,5 +66,13 @@ export class AudienceService {
     await this.audienceModel
       .deleteMany({ user })
       .exec();
+  }
+
+  //Cancel status by availability id
+  async cancelAudience(availability: string) {
+    const audi = await this.audienceModel.find({ availability }).exec();
+    const id = audi[0]._id;
+    console.log(id);
+    await this.audienceModel.findByIdAndUpdate(id, {status_audience: "Annulé"}).exec();
   }
 }
