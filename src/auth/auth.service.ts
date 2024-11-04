@@ -65,6 +65,13 @@ export class AuthService {
       password: hashedReal,
     });
 
+    await this.mailerService.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "MININTER/AUDIENCE: Inscription réussie",
+      html: `<div>Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}</div>`
+    })
+
     return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPwd };
   }
 
