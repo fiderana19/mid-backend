@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TreatRequestDto } from 'src/dto/treat-request.dto';
 import { RequestStatus } from 'src/enums/requeststatuts.enum';
 import { mapRequest, mapSingleRequest } from 'src/mappers/request.mapper';
 import { Request } from 'src/schema/request.schema';
@@ -12,8 +11,6 @@ export class RequestService {
   constructor(
     @InjectModel(Request.name)
     private requestModel: Model<Request>,
-    @InjectModel(User.name)
-    private userModel: Model<User>,
   ) {}
 
   //Get all request
@@ -100,6 +97,13 @@ export class RequestService {
     return await this.requestModel
       .find({ status_request })
       .countDocuments()
+      .exec();
+  }
+
+  //Delete request by user id
+  async deleteManyRequestByUserId(user: string) {
+    await this.requestModel
+      .deleteMany({ user })
       .exec();
   }
 }
