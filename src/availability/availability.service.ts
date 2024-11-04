@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AudienceService } from 'src/audience/audience.service';
+import { AvailabilityStatus } from 'src/enums/availability.enum';
 import { mapAvailability } from 'src/mappers/availability.mapper';
 import { Availability } from 'src/schema/availability.schema';
 
@@ -16,6 +17,12 @@ export class AvailabilityService {
   //Get all availbility
   async getAllAvailability(): Promise<Availability[]> {
     const ava = await this.availabilityModel.find();
+    return mapAvailability(ava);
+  }
+
+  //Get all free availbility
+  async getAllFreeAvailability(): Promise<Availability[]> {
+    const ava = await this.availabilityModel.find({ status_availability: "Libre" });
     return mapAvailability(ava);
   }
 
@@ -50,5 +57,10 @@ export class AvailabilityService {
   //Delete availability
   async deleteAvailability(id: string) {
     return await this.availabilityModel.findByIdAndDelete(id).exec();
+  }
+
+  //Change availability status after audience created
+  async changeAvailabilityStatusToOccuped(id: string) {
+    await this.availabilityModel.findByIdAndUpdate(id, {status_availability: AvailabilityStatus.Occuped}).exec();
   }
 }

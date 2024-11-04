@@ -2,10 +2,11 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AudienceService } from './audience.service';
 import { CreateAudienceDto } from 'src/dto/create-audience.dto';
 import { TreatAudienceDto } from 'src/dto/treat-audience.dto';
+import { AvailabilityService } from 'src/availability/availability.service';
 
 @Controller('audience')
 export class AudienceController {
-  constructor(private audienceService: AudienceService) {}
+  constructor(private audienceService: AudienceService, private availabilityService: AvailabilityService) {}
 
   //Getting all the audience
   @Get('/all')
@@ -48,6 +49,8 @@ export class AudienceController {
   //Create audience
   @Post('/create')
   async createAudience(@Body() createAudienceDto: CreateAudienceDto) {
+    await this.availabilityService.changeAvailabilityStatusToOccuped(createAudienceDto.availability);
+    
     return await this.audienceService.createAudience(createAudienceDto);
   }
 

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AvailabilityService } from 'src/availability/availability.service';
+import { AudienceStatus } from 'src/enums/audiencestatus.enum';
 import { mapAudience } from 'src/mappers/audience.mapper';
 import { Audience } from 'src/schema/audience.schema';
 
@@ -73,6 +75,6 @@ export class AudienceService {
     const audi = await this.audienceModel.find({ availability }).exec();
     const id = audi[0]._id;
     console.log(id);
-    await this.audienceModel.findByIdAndUpdate(id, {status_audience: "Annulé"}).exec();
+    await this.audienceModel.findByIdAndUpdate(id, {status_audience: AudienceStatus.Canceled}).exec();
   }
 }

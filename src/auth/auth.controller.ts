@@ -101,9 +101,8 @@ export class AuthController {
   @Patch('/validate/:id')
   async validateUser(
     @Param('id') id: string,
-    @Body() validateUserDto: ValidateUserDto,
   ) {
-    return await this.authService.validateUser(id, validateUserDto);
+    return await this.authService.validateUser(id);
   }
 
   //Delete user

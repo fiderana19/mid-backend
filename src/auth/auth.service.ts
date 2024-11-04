@@ -101,8 +101,8 @@ export class AuthService {
   }
 
   //Validate user
-  async validateUser(id: string, validateUserDto: ValidateUserDto) {
-    return await this.userModel.findByIdAndUpdate(id, validateUserDto).exec();
+  async validateUser(id: string) {
+    return await this.userModel.findByIdAndUpdate(id, { validation: true }).exec();
   }
 
   //Get User by id

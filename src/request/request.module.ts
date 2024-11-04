@@ -14,6 +14,6 @@ import { Request, RequestSchema } from 'src/schema/request.schema';
   ],
   controllers: [RequestController],
   providers: [RequestService],
-  exports: [RequestService],
+  exports: [RequestService, RequestModule],
 })
 export class RequestModule {}

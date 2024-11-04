@@ -21,6 +21,12 @@ export class AvailabilityController {
     return await this.availabilityService.getAllAvailability();
   }
 
+  //Get all free availability
+  @Get('/all/free')
+  async getAllFreeAvailability() {
+    return await this.availabilityService.getAllFreeAvailability();
+  }
+
   //Create availability
   @Post('/create')
   async createAvailability(@Body() createAvailability: CreateAvailabilityDto) {
