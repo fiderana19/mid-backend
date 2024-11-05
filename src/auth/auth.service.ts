@@ -5,7 +5,6 @@ import { UpdateUserDto } from 'src/dto/update-user.dto';
 import { User } from 'src/schema/user.schema';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
@@ -13,6 +12,8 @@ import { randomInt } from 'crypto';
 import { RequestService } from 'src/request/request.service';
 import { AudienceService } from 'src/audience/audience.service';
 import { MailerService } from '@nestjs-modules/mailer';
+import { promisify } from 'util';
+import * as fs from 'fs';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,9 @@ export class AuthService {
     private audienceService: AudienceService,
     private mailerService: MailerService,
   ) {}
+
+  private readFileAsync = promisify(fs.readFile);
+
 
   //Get all user
   async getAuth(): Promise<any> {
@@ -65,11 +69,22 @@ export class AuthService {
       password: hashedReal,
     });
 
+    const mailBody = `<div> 
+                        <img src="cid:mid" alt="Mininter Logo" />
+                        Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}
+                      </div>`;
+    const midLogoAttachement: any = this.readFileAsync('../mid-backend/src/assets/mid-logo.jpg');
+
     await this.mailerService.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
       subject: "MININTER/AUDIENCE: Inscription réussie",
-      html: `<div>Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}</div>`
+      html: mailBody,
+      attachments: [{
+        filename: 'mid-logo.jpg',
+        path: '../mid-backend/src/assets/mid-logo.jpg',
+        cid: 'mid'
+      }]
     })
 
     return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPwd };
