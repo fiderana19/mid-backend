@@ -5,20 +5,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/schema/user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
 import { Request, RequestSchema } from 'src/schema/request.schema';
 import { RequestService } from 'src/request/request.service';
 import { AudienceService } from 'src/audience/audience.service';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
-import { MailerModule } from '@nestjs-modules/mailer';
+import { MailingModule } from '../mailing/mailing.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
+    MailingModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -30,20 +27,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
           },
         };
       },
-    }),
-    MailerModule.forRoot({
-      transport: {
-        host: process.env.EMAIL_HOST,
-        secure: false,
-        port: Number(process.env.EMAIL_PORT),
-        tls: {
-          ciphers: process.env.EMAIL_TLS_CIPHERS,
-        },
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      }
     }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },

@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
 import { AvailabilityModule } from './availability/availability.module';
+import { MailingModule } from './mailing/mailing.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AvailabilityModule } from './availability/availability.module';
     AudienceModule,
     RequestModule,
     AvailabilityModule,
+    MailingModule,
   ],
   providers: [
     {
