@@ -80,6 +80,7 @@ export class AuthService {
       to: email,
       subject: "MININTER/AUDIENCE: Inscription réussie",
       html: mailBody,
+      attachDataUrls: true,
       attachments: [{
         filename: 'mid-logo.jpg',
         path: '../mid-backend/src/assets/mid-logo.jpg',
