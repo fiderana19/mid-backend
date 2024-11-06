@@ -16,6 +16,9 @@ export class User extends Document {
   email: string;
 
   @Prop()
+  adresse: string;
+
+  @Prop()
   telephone: string;
 
   @Prop()
@@ -35,6 +38,12 @@ export class User extends Document {
 
   @Prop()
   password: string;
+
+  @Prop()
+  profile_photo: string;
+
+  @Prop()
+  cni_photo: string;
 
   @Prop({ default: false })
   validation: boolean;

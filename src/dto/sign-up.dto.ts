@@ -18,6 +18,10 @@ export class SignUpDto {
   telephone: string;
 
   @IsNotEmpty()
+  @IsString()
+  adresse: string;
+
+  @IsNotEmpty()
   date_naissance: Date;
 
   @IsNotEmpty()

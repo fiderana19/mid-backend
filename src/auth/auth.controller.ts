@@ -7,7 +7,9 @@ import {
   Patch,
   Post,
   Req,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
@@ -20,6 +22,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -60,8 +63,15 @@ export class AuthController {
 
   //Create user
   @Post('/signup')
-  async signUp(@Body() data: SignUpDto): Promise<any> {
-    return await this.authService.signUp(data);
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'profile_photo', maxCount: 1 },
+    { name: 'cni_photo', maxCount: 1 },
+  ]))
+  async signUp(
+    @Body() data: SignUpDto,
+    @UploadedFiles() files: { profile_photo?: Express.Multer.File[], cni_photo?: Express.Multer.File[] }
+  ): Promise<any> {
+    return await this.authService.signUp(data,files.profile_photo,files.cni_photo);
   }
 
   //Login

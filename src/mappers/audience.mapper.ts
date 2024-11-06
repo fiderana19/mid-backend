@@ -9,6 +9,7 @@ export const mapAudience = (audiences: any) => {
     user_prenom: audience.user ? audience.user.prenom : '',
     user_email: audience.user ? audience.user.email : '',
     user_cni: audience.user ? audience.user.cni : '',
+    user_profile_photo: audience.user ? audience.user.profile_photo : '',
     availability: audience.availability ? audience.availability._id : '',
     availability_date: audience.availability ? formatDate(audience.availability.date_availability) : '',
     availability_hour_debut: audience.availability ? formatTime(audience.availability.hour_debut) : '',

@@ -16,7 +16,7 @@ export class AudienceService {
   //Get all audience
   async getAllAudience() {
     const audiences = await this.audienceModel.find()
-      .populate('user', '_id nom prenom email cni')
+      .populate('user', '_id nom prenom email cni profile_photo')
       .populate('availability','_id date_availability hour_debut hour_end')
       .populate('request','_id object type_request')
       .exec();

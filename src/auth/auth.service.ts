@@ -37,12 +37,18 @@ export class AuthService {
   }
 
   //Signup
-  async signUp(signUpDto): Promise<any> {
-    
+  async signUp(signUpDto, profile_photo, cni_photo): Promise<any> {
+    // console.log('1 image : ', profile_photo , '2 image : ', cni_photo);
+    const profile_photob64 = profile_photo[0].buffer.toString('base64');
+    const cni_photob64 = cni_photo[0].buffer.toString('base64');
+
+    console.log('first : ', profile_photob64 , 'second : ', cni_photob64);
+
     const {
       nom,
       prenom,
       email,
+      adresse, 
       telephone,
       date_naissance,
       lieu_naissance,
@@ -61,11 +67,14 @@ export class AuthService {
       prenom,
       email,
       telephone,
+      adresse,
       date_naissance,
       lieu_naissance,
       cni,
       date_cni,
       lieu_cni,
+      profile_photo: profile_photob64,
+      cni_photo: cni_photob64,
       password: hashedReal,
     });
 
