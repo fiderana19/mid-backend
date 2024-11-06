@@ -8,12 +8,13 @@ import { JwtService } from '@nestjs/jwt';
 import { mapSingleUser, mapUser } from 'src/mappers/user.mapper';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
-import { randomInt } from 'crypto';
 import { RequestService } from 'src/request/request.service';
 import { AudienceService } from 'src/audience/audience.service';
 import { MailerService } from '@nestjs-modules/mailer';
 import { promisify } from 'util';
 import * as fs from 'fs';
+import * as qrcode from 'qrcode';
+import { generateRandom6digits } from 'src/utils/generateRandom';
 
 @Injectable()
 export class AuthService {
@@ -50,8 +51,7 @@ export class AuthService {
       lieu_cni,
     } = signUpDto;
 
-    const randomPwd = randomInt(0,9);
-    const randomPassword = randomPwd.toString()
+    const randomPassword = generateRandom6digits();
 
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     const hashedReal = hashedPassword.toString();
@@ -69,8 +69,11 @@ export class AuthService {
       password: hashedReal,
     });
 
+    const qrCodeDataToURL = await qrcode.toDataURL('Messi');
+
     const mailBody = `<div> 
                         <img src="cid:mid" alt="Mininter Logo" />
+                        <img src=${qrCodeDataToURL} alt="Mininter Logo" />
                         Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}
                       </div>`;
     const midLogoAttachement: any = this.readFileAsync('../mid-backend/src/assets/mid-logo.jpg');
@@ -88,13 +91,12 @@ export class AuthService {
       }]
     })
 
-    return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPwd };
+    return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPassword };
   }
 
   //Login
   async login(loginDto): Promise<any> {
     const { email, password } = loginDto;
-    console.log(email, password);
 
     const user = await this.userModel.findOne({ email });
 
