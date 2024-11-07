@@ -12,6 +12,9 @@ export class Audience extends Document {
   @Prop({ default: now() })
   audience_creation: Date;
 
+  @Prop()
+  ref_audience: string;
+
   @Prop({
     type: [{ type: String, enum: AudienceStatus }],
     default: [AudienceStatus.Fixed],

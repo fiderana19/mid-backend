@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AvailabilityService } from 'src/availability/availability.service';
 import { AudienceStatus } from 'src/enums/audiencestatus.enum';
 import { mapAudience } from 'src/mappers/audience.mapper';
 import { Audience } from 'src/schema/audience.schema';
@@ -25,7 +24,14 @@ export class AudienceService {
 
   //Create audience
   async createAudience(createAudienceDto) {
-    return await this.audienceModel.create(createAudienceDto);
+    const {request, availability, user} = createAudienceDto;
+    const ref_audience: string = 'ref';
+    return await this.audienceModel.create({
+      ref_audience,
+      request,
+      availability,
+      user,
+    });
   }
 
   //Treating audience status
