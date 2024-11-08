@@ -17,7 +17,7 @@ export class RequestService {
   async getRequest(): Promise<any> {
     const req = await this.requestModel
       .find()
-      .populate('user', '_id nom prenom cni profile_photo')
+      .populate('user', '_id nom prenom cni adresse email telephone profile_photo')
       .exec();
 
     return mapRequest(req);
@@ -27,7 +27,7 @@ export class RequestService {
   async getRequestById(id: string): Promise<any> {
     const req = await this.requestModel
       .findById(id)
-      .populate('user', '_id nom prenom cni profile_photo')
+      .populate('user', '_id nom prenom cni adresse email telephone profile_photo')
       .exec();
 
     return mapSingleRequest(req);

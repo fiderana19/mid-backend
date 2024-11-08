@@ -81,7 +81,7 @@ export class AuthService {
     const qrCodeDataToURL = await qrcode.toDataURL('Messi');
 
     const mailBody = `<div> 
-                        <img src="cid:mid" alt="Mininter Logo" />
+                        <img src="cid:mid" alt="Mininter Logo" width=200 height=200 />
                         <img src=${qrCodeDataToURL} alt="Mininter Logo" />
                         Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}
                       </div>`;
