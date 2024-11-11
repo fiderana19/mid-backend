@@ -49,6 +49,11 @@ export class AuthController {
     return await this.authService.getUserById(id);
   }
 
+  @Get('/chart')
+  async countUserForChart() {
+    return await this.authService.countUserStat();
+  }
+
   //Count user by validation
   @Get('/count/:validation')
   async countUserByValidation(@Param('validation') validation: boolean) {

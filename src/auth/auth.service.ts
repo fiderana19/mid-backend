@@ -203,4 +203,12 @@ export class AuthService {
     
     return await this.userModel.findByIdAndDelete(id).exec();
   }
+
+  async countUserStat() {
+    const total_user = await this.userModel.find({ roles : "user" }).countDocuments().exec();
+    const total_user_valid = await this.userModel.find({ roles : "user", validation : false }).countDocuments().exec();
+    const total_user_notvalid = await this.userModel.find({ roles : "user", validation : true }).countDocuments().exec();
+    
+    return { total_user, total_user_valid, total_user_notvalid };
+  }
 }
