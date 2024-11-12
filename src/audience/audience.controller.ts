@@ -19,6 +19,12 @@ export class AudienceController {
   async countAllAudience() {
     return await this.audienceService.countAllAudience();
   }
+  
+  //Get audience by id
+  @Get('/get/:id')
+  async getAudienceById(@Param('id') id: string ) {
+    return await this.audienceService.getAudiencebyId(id);
+  }
 
   //Count audience by status
   @Get('/count/status/:status_audience')

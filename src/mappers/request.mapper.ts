@@ -33,9 +33,11 @@ export const mapSingleRequest = (request: any) => {
     _id: request._id,
     type_request: request.type_request,
     object: request.object,
-    date_wanted_debut: request.date_wanted_debut,
-    date_wanted_end: request.date_wanted_end,
-    request_creation: request.request_creation,
+    date_wanted_debut: formatDate(request.date_wanted_debut),
+    date_wanted_end: formatDate(request.date_wanted_end),
+    request_creation: formatDate(request.request_creation),
     status_request: request.status_request,
+    debut_initial: request.date_wanted_debut,
+    end_initial: request.date_wanted_end,
   };
 };

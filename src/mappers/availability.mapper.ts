@@ -7,5 +7,6 @@ export const mapAvailability = (availabilities: any) => {
     date_availability: formatDate(availability.date_availability),
     hour_debut: formatTime(availability.hour_debut),
     hour_end: formatTime(availability.hour_end),
+    date_initial: availability.date_availability,
   }));
 };

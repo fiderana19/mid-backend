@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AudienceStatus } from 'src/enums/audiencestatus.enum';
-import { mapAudience } from 'src/mappers/audience.mapper';
+import { mapAudience, mapSingleAudience } from 'src/mappers/audience.mapper';
 import { Audience } from 'src/schema/audience.schema';
 
 @Injectable()
@@ -15,11 +15,20 @@ export class AudienceService {
   //Get all audience
   async getAllAudience() {
     const audiences = await this.audienceModel.find()
-      .populate('user', '_id nom prenom email cni profile_photo')
+      .populate('user', '_id nom prenom email cni telephone adresse profile_photo')
       .populate('availability','_id date_availability hour_debut hour_end')
       .populate('request','_id object type_request')
       .exec();
     return mapAudience(audiences);
+  }
+
+  async getAudiencebyId(id: string) {
+    const audience = await this.audienceModel.findById(id)
+      .populate('user', '_id nom prenom email cni telephone adresse profile_photo')
+      .populate('availability','_id date_availability hour_debut hour_end')
+      .populate('request','_id object type_request')
+      .exec();
+    return mapSingleAudience(audience);
   }
 
   //Create audience

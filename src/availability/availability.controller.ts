@@ -48,7 +48,7 @@ export class AvailabilityController {
   }
 
   //Get availability by id
-  @Patch('/get/:id')
+  @Get('/get/:id')
   async getAvailabilityById(@Param('id') id: string) {
     return await this.availabilityService.getAllAvailabilityById(id);
   }
