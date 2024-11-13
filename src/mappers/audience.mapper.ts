@@ -43,5 +43,8 @@ export const mapSingleAudience = (audience: any) => {
     request: audience.request ? audience.request._id : '',
     request_object: audience.request ? audience.request.object : '',
     request_type: audience.request ? audience.request.type_request : '',
+    request_date_wanted_debut_initial: audience.request ? audience.request.date_wanted_debut : '',
+    request_date_wanted_end_initial: audience.request ? audience.request.date_wanted_end : '',
+    date_initial: audience.availability ? audience.availability.date_availability : '',
   };
 };

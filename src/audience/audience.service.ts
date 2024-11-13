@@ -26,7 +26,7 @@ export class AudienceService {
     const audience = await this.audienceModel.findById(id)
       .populate('user', '_id nom prenom email cni telephone adresse profile_photo')
       .populate('availability','_id date_availability hour_debut hour_end')
-      .populate('request','_id object type_request')
+      .populate('request','_id object type_request date_wanted_debut date_wanted_end')
       .exec();
     return mapSingleAudience(audience);
   }
@@ -70,7 +70,12 @@ export class AudienceService {
 
   //Get audience by user
   async getAudienceByUser(user) {
-    return await this.audienceModel.find({ user }).exec();
+    const audiences = await this.audienceModel.find({ user })
+      .populate('user', '_id nom prenom email cni telephone adresse profile_photo')
+      .populate('availability','_id date_availability hour_debut hour_end')
+      .populate('request','_id object type_request')
+      .exec();
+    return mapAudience(audiences);
   }
 
   //Count audience by user
@@ -91,5 +96,9 @@ export class AudienceService {
     const id = audi[0]._id;
     console.log(id);
     await this.audienceModel.findByIdAndUpdate(id, {status_audience: AudienceStatus.Canceled}).exec();
+  }
+
+  async reportAudience(id: string, availability: any) {
+    return await this.audienceModel.findByIdAndUpdate(id, availability).exec();
   }
 }

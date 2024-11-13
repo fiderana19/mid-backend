@@ -42,7 +42,9 @@ export class RequestService {
 
   //Get request by user
   async getRequestByUser(user: string) {
-    const req = await this.requestModel.find({ user }).exec();
+    const req = await this.requestModel.find({ user })
+    .populate('user', '_id nom prenom cni adresse email telephone profile_photo')
+    .exec();
     return mapRequest(req);
   }
 

@@ -68,4 +68,13 @@ export class AudienceController {
   ) {
     return await this.audienceService.treatAudience(id, treatAudienceDto);
   }
+
+  //Treat audience
+  @Patch('/report/:id')
+  async reportAudience(
+    @Param('id') id: string,
+    @Body() availability: any,
+  ) {
+    return await this.audienceService.treatAudience(id, availability);
+  }
 }
