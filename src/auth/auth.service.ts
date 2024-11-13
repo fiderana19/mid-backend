@@ -42,8 +42,6 @@ export class AuthService {
     const profile_photob64 = profile_photo[0].buffer.toString('base64');
     const cni_photob64 = cni_photo[0].buffer.toString('base64');
 
-    console.log('first : ', profile_photob64 , 'second : ', cni_photob64);
-
     const {
       nom,
       prenom,
@@ -80,12 +78,31 @@ export class AuthService {
 
     const qrCodeDataToURL = await qrcode.toDataURL('Messi');
 
-    const mailBody = `<div> 
-                        <img src="cid:mid" alt="Mininter Logo" width=200 height=200 />
-                        <img src=${qrCodeDataToURL} alt="Mininter Logo" />
-                        Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}
-                      </div>`;
-    const midLogoAttachement: any = this.readFileAsync('../mid-backend/src/assets/mid-logo.jpg');
+    const mailBody = `
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+
+        <style text="text/css">
+          .my { color: blue }
+          p { color: blue }
+        </style>
+
+      </head>
+      <body>
+          <div> 
+            <img src="cid:mid" alt="Mininter Logo" width=200 height=200 />
+            <img src=${qrCodeDataToURL} alt="Mininter Logo" />
+            <div class="my">
+              Bonjour ${nom} ${prenom}. Votre mot de passe initial est: ${randomPassword}
+            </div>
+          </div>
+      </body>
+    </html>
+`;
 
     await this.mailerService.sendMail({
       from: process.env.EMAIL_USER,
