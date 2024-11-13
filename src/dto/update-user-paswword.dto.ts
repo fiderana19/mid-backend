@@ -1,3 +1,4 @@
 export class UpdateUserPassword {
-    password: string;
+    old_password: string;
+    new_password: string;
 }

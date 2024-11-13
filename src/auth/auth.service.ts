@@ -187,9 +187,17 @@ export class AuthService {
 
   //Update user password
   async updateUserPassword(id: string, updateUser: UpdateUserPassword) {
-    const { password } = updateUser;
+    const { old_password, new_password } = updateUser;
+    const user = await this.userModel.findById(id);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //Matching the password
+    const isPasswordMatched = await bcrypt.compare(old_password, user.password);
+
+    if (!isPasswordMatched) {
+      throw new UnauthorizedException('Mot de passe incorrect !');
+    }
+
+    const hashedPassword = await bcrypt.hash(new_password, 10);
 
     return await this.userModel
       .findByIdAndUpdate(id, { password: hashedPassword }, { new: true })
