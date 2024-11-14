@@ -4,9 +4,11 @@ import { RequestService } from './request.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Request, RequestSchema } from 'src/schema/request.schema';
+import { MailingModule } from 'src/mailing/mailing.module';
 
 @Module({
   imports: [
+    MailingModule,
     AuthModule,
     MongooseModule.forFeature([
       { name: Request.name, schema: RequestSchema },

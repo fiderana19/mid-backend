@@ -3,10 +3,17 @@ import { AudienceService } from './audience.service';
 import { CreateAudienceDto } from 'src/dto/create-audience.dto';
 import { TreatAudienceDto } from 'src/dto/treat-audience.dto';
 import { AvailabilityService } from 'src/availability/availability.service';
+import { AuthService } from 'src/auth/auth.service';
+import { RequestService } from 'src/request/request.service';
 
 @Controller('audience')
 export class AudienceController {
-  constructor(private audienceService: AudienceService, private availabilityService: AvailabilityService) {}
+  constructor(
+    private audienceService: AudienceService,
+    private availabilityService: AvailabilityService, 
+    private userService: AuthService,
+    private requestService: RequestService,
+  ) {}
 
   //Getting all the audience
   @Get('/all')
@@ -56,8 +63,11 @@ export class AudienceController {
   @Post('/create')
   async createAudience(@Body() createAudienceDto: CreateAudienceDto) {
     await this.availabilityService.changeAvailabilityStatusToOccuped(createAudienceDto.availability);
+    const usr = await this.userService.getUserByIdForMailing(createAudienceDto.user);
+    const req = await this.requestService.getRequestById(createAudienceDto.request);
+    const ava = await this.availabilityService.getAvailabilityById(createAudienceDto.availability);
     
-    return await this.audienceService.createAudience(createAudienceDto);
+    return await this.audienceService.createAudience(createAudienceDto,usr, req, ava);
   }
 
   //Treat audience

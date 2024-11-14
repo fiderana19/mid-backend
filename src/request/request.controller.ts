@@ -74,13 +74,22 @@ export class RequestController {
   }
 
   //Treat request
-  @Patch('/treat/:id')
-  async treatRequest(
+  @Patch('/accept/:id')
+  async acceptRequest(
     @Param('id') id: string,
     @Body() treatRequestDto: TreatRequestDto,
   ) {
-    return await this.requestService.treatRequest(id, treatRequestDto);
+    return await this.requestService.acceptRequest(id, treatRequestDto);
   }
+
+    //Treat request
+    @Patch('/deny/:id')
+    async denyRequest(
+      @Param('id') id: string,
+      @Body() treatRequestDto: TreatRequestDto,
+    ) {
+      return await this.requestService.denyRequest(id, treatRequestDto);
+    }
 
   //Update request
   @Patch('/update/:id')

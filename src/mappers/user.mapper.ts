@@ -22,7 +22,7 @@ export const mapUser = (users: any) => {
 
 export const mapSingleUser = (user: any) => {
   return {
-    _id: user._id,
+    _id: user._id ? user._id : '',
     nom: user.nom,
     prenom: user.prenom,
     email: user.email,
