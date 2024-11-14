@@ -62,10 +62,12 @@ export class AudienceController {
   //Create audience
   @Post('/create')
   async createAudience(@Body() createAudienceDto: CreateAudienceDto) {
-    await this.availabilityService.changeAvailabilityStatusToOccuped(createAudienceDto.availability);
+    // await this.availabilityService.changeAvailabilityStatusToOccuped(createAudienceDto.availability);
     const usr = await this.userService.getUserByIdForMailing(createAudienceDto.user);
     const req = await this.requestService.getRequestById(createAudienceDto.request);
     const ava = await this.availabilityService.getAvailabilityById(createAudienceDto.availability);
+
+    console.log(createAudienceDto)
     
     return await this.audienceService.createAudience(createAudienceDto,usr, req, ava);
   }

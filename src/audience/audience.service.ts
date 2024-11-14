@@ -41,7 +41,6 @@ export class AudienceService {
     const {request, availability, user} = createAudienceDto;
     console.log("ito aloha", usr, "de aveo ito", req, "de farany", ava)
     const ref_audience: string = generateRandomRef();
-    // User detail for mailer
     // Request detail for email
     const { type_request, request_creation, user_nom, user_prenom, user_email } = req;
     const nom = user_nom;
