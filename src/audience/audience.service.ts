@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { AudienceStatus } from 'src/enums/audiencestatus.enum';
 import { mapAudience, mapSingleAudience } from 'src/mappers/audience.mapper';
 import { Audience } from 'src/schema/audience.schema';
+import { generateRandomRef } from 'src/utils/generateRandom';
 
 @Injectable()
 export class AudienceService {
@@ -34,7 +35,7 @@ export class AudienceService {
   //Create audience
   async createAudience(createAudienceDto) {
     const {request, availability, user} = createAudienceDto;
-    const ref_audience: string = 'ref';
+    const ref_audience: string = generateRandomRef();
     return await this.audienceModel.create({
       ref_audience,
       request,

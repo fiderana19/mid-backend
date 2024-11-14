@@ -88,12 +88,11 @@ export class AuthService {
 
         <style text="text/css">
           .my { color: blue }
-          p { color: blue }
+          .bd { width: 100%; height: 100%; background: yellow; }
         </style>
-
       </head>
       <body>
-          <div> 
+          <div class="bd"> 
             <img src="cid:mid" alt="Mininter Logo" width=200 height=200 />
             <img src=${qrCodeDataToURL} alt="Mininter Logo" />
             <div class="my">
@@ -123,7 +122,7 @@ export class AuthService {
   //Login
   async login(loginDto): Promise<any> {
     const { email, password } = loginDto;
-
+  
     const user = await this.userModel.findOne({ email });
 
     //If the user didn't exist
