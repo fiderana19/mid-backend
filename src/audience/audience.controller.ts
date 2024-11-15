@@ -10,7 +10,7 @@ import { RequestService } from 'src/request/request.service';
 export class AudienceController {
   constructor(
     private audienceService: AudienceService,
-    private availabilityService: AvailabilityService, 
+    private availabilityService: AvailabilityService,
     private userService: AuthService,
     private requestService: RequestService,
   ) {}
@@ -26,10 +26,10 @@ export class AudienceController {
   async countAllAudience() {
     return await this.audienceService.countAllAudience();
   }
-  
+
   //Get audience by id
   @Get('/get/:id')
-  async getAudienceById(@Param('id') id: string ) {
+  async getAudienceById(@Param('id') id: string) {
     return await this.audienceService.getAudiencebyId(id);
   }
 
@@ -62,31 +62,60 @@ export class AudienceController {
   //Create audience
   @Post('/create')
   async createAudience(@Body() createAudienceDto: CreateAudienceDto) {
-    // await this.availabilityService.changeAvailabilityStatusToOccuped(createAudienceDto.availability);
-    const usr = await this.userService.getUserByIdForMailing(createAudienceDto.user);
-    const req = await this.requestService.getRequestById(createAudienceDto.request);
-    const ava = await this.availabilityService.getAvailabilityById(createAudienceDto.availability);
+    // Getting the detail for mailing
+    const usr = await this.userService.getUserByIdForMailing(
+      createAudienceDto.user,
+    );
+    const req = await this.requestService.getRequestById(
+      createAudienceDto.request,
+    );
+    const ava = await this.availabilityService.getAvailabilityById(
+      createAudienceDto.availability,
+    );
+    // Creating audience
+    const response = await this.audienceService.createAudience(
+      createAudienceDto,
+      usr,
+      req,
+      ava,
+    );
+    // Changing the availability status
+    await this.availabilityService.changeAvailabilityStatusToOccuped(
+      createAudienceDto.availability,
+    );
 
-    console.log(createAudienceDto)
-    
-    return await this.audienceService.createAudience(createAudienceDto,usr, req, ava);
+    return response;
   }
 
   //Treat audience
-  @Patch('/treat/:id')
-  async treatAudience(
-    @Param('id') id: string,
-    @Body() treatAudienceDto: TreatAudienceDto,
-  ) {
-    return await this.audienceService.treatAudience(id, treatAudienceDto);
+  @Patch('/cancel/:id')
+  async treatAudience(@Param('id') id: string) {
+    // Getting the audience
+    const audi = await this.audienceService.getAudiencebyId(id);
+    // Getting detail for mailing
+    const usr = await this.userService.getUserByIdForMailing(audi.user);
+    const req = await this.requestService.getRequestById(audi.request);
+    const ava = await this.availabilityService.getAvailabilityById(
+      audi.availability,
+    );
+    // Treating audience
+    const response = await this.audienceService.treatAudience(
+      id,
+      usr,
+      req,
+      ava,
+    );
+    // Changing the availability status
+    await this.availabilityService.changeAvailabilityStatusToOccuped(
+      audi.availability,
+    );
+
+    return response;
   }
 
   //Treat audience
   @Patch('/report/:id')
-  async reportAudience(
-    @Param('id') id: string,
-    @Body() availability: any,
-  ) {
-    return await this.audienceService.treatAudience(id, availability);
+  async reportAudience(@Param('id') id: string, @Body() availability: any) {
+    return await this.audienceService.reportAudience(id, availability);
   }
 }

@@ -3,7 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AudienceService } from 'src/audience/audience.service';
 import { AvailabilityStatus } from 'src/enums/availability.enum';
-import { mapAvailability, mapSingleAvailability } from 'src/mappers/availability.mapper';
+import {
+  mapAvailability,
+  mapSingleAvailability,
+} from 'src/mappers/availability.mapper';
 import { Availability } from 'src/schema/availability.schema';
 
 @Injectable()
@@ -28,14 +31,16 @@ export class AvailabilityService {
 
   //Get all free availbility
   async getAllFreeAvailability(): Promise<Availability[]> {
-    const ava = await this.availabilityModel.find({ status_availability: "Libre" });
+    const ava = await this.availabilityModel.find({
+      status_availability: 'Libre',
+    });
     return mapAvailability(ava);
   }
 
   //Change availability status
   async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto) {
     console.log(updateAvailabilityStatusDto);
-    if(updateAvailabilityStatusDto.status_availability === "Annulé") {
+    if (updateAvailabilityStatusDto.status_availability === 'Annulé') {
       await this.audienceService.cancelAudience(id);
     }
     return await this.availabilityModel
@@ -67,6 +72,10 @@ export class AvailabilityService {
 
   //Change availability status after audience created
   async changeAvailabilityStatusToOccuped(id: string) {
-    await this.availabilityModel.findByIdAndUpdate(id, {status_availability: AvailabilityStatus.Occuped}).exec();
+    await this.availabilityModel
+      .findByIdAndUpdate(id, {
+        status_availability: AvailabilityStatus.Occuped,
+      })
+      .exec();
   }
 }

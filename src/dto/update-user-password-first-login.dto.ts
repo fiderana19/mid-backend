@@ -1,3 +1,3 @@
 export class UpdateUserPasswordForFirstLogin {
-    password: string;
+  password: string;
 }

@@ -20,7 +20,10 @@ export class RequestService {
   async getRequest(): Promise<any> {
     const req = await this.requestModel
       .find()
-      .populate('user', '_id nom prenom cni adresse email telephone profile_photo')
+      .populate(
+        'user',
+        '_id nom prenom cni adresse email telephone profile_photo',
+      )
       .exec();
 
     return mapRequest(req);
@@ -30,7 +33,10 @@ export class RequestService {
   async getRequestById(id: string): Promise<any> {
     const req = await this.requestModel
       .findById(id)
-      .populate('user', '_id nom prenom cni adresse email telephone profile_photo')
+      .populate(
+        'user',
+        '_id nom prenom cni adresse email telephone profile_photo',
+      )
       .exec();
 
     return mapSingleRequest(req);
@@ -45,9 +51,13 @@ export class RequestService {
 
   //Get request by user
   async getRequestByUser(user: string) {
-    const req = await this.requestModel.find({ user })
-    .populate('user', '_id nom prenom cni adresse email telephone profile_photo')
-    .exec();
+    const req = await this.requestModel
+      .find({ user })
+      .populate(
+        'user',
+        '_id nom prenom cni adresse email telephone profile_photo',
+      )
+      .exec();
     return mapRequest(req);
   }
 
@@ -58,14 +68,22 @@ export class RequestService {
 
   //Treat request
   async acceptRequest(id: string, treatRequestDto) {
-    const req = await this.requestModel.findById(id)
-    .populate('user', ' nom prenom email')
-    .exec();
-    const { type_request, date_wanted_debut ,date_wanted_end, request_creation } = req;
+    // Getting the request detail
+    const req = await this.requestModel
+      .findById(id)
+      .populate('user', ' nom prenom email')
+      .exec();
+
+    const {
+      type_request,
+      date_wanted_debut,
+      date_wanted_end,
+      request_creation,
+    } = req;
     const debut = formatDate(date_wanted_debut);
     const end = formatDate(date_wanted_end);
     const creation = formatDate(request_creation);
-    const { nom, prenom ,email } = req.user;
+    const { nom, prenom, email } = req.user;
     const mailBody = `
       <html lang="en">
   <head>
@@ -224,32 +242,45 @@ export class RequestService {
     </body>
     </html>
     `;
+    // Accepting request
+    const response = await this.requestModel
+      .findByIdAndUpdate(id, treatRequestDto, { new: true })
+      .exec();
 
+    // Sending mail
     await this.mailerService.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "MININTER/AUDIENCE: Inscription réussie",
+      subject: 'MININTER/AUDIENCE: Inscription réussie',
       html: mailBody,
       attachDataUrls: true,
-      attachments: [{
-        filename: 'mid-logo.jpg',
-        path: '../mid-backend/src/assets/mid-logo.jpg',
-        cid: 'mid'
-      }]
-    })
+      attachments: [
+        {
+          filename: 'mid-logo.jpg',
+          path: '../mid-backend/src/assets/mid-logo.jpg',
+          cid: 'mid',
+        },
+      ],
+    });
 
-    return await this.requestModel
-      .findByIdAndUpdate(id, treatRequestDto, { new: true })
-      .exec();
+    return response;
   }
 
   //Treat request
   async denyRequest(id: string, treatRequestDto) {
-    const req = await this.requestModel.findById(id)
-    .populate('user', ' nom prenom email')
-    .exec();
-    const { type_request, date_wanted_debut ,date_wanted_end, request_creation } = req;
-    const { nom, prenom ,email } = req.user;
+    // Getting the request detail
+    const req = await this.requestModel
+      .findById(id)
+      .populate('user', ' nom prenom email')
+      .exec();
+
+    const {
+      type_request,
+      date_wanted_debut,
+      date_wanted_end,
+      request_creation,
+    } = req;
+    const { nom, prenom, email } = req.user;
     const debut = formatDate(date_wanted_debut);
     const end = formatDate(date_wanted_end);
     const creation = formatDate(request_creation);
@@ -411,24 +442,27 @@ export class RequestService {
     </body>
     </html>
   `;
-
-  await this.mailerService.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "MININTER/AUDIENCE: Inscription réussie",
-    html: mailBody,
-    attachDataUrls: true,
-    attachments: [{
-      filename: 'mid-logo.jpg',
-      path: '../mid-backend/src/assets/mid-logo.jpg',
-      cid: 'mid'
-    }]
-  })
-
-      return await this.requestModel
-        .findByIdAndUpdate(id, treatRequestDto, { new: true })
-        .exec();
-    }
+    // Denying request
+    const response = await this.requestModel
+      .findByIdAndUpdate(id, treatRequestDto, { new: true })
+      .exec();
+    // Seding mail
+    await this.mailerService.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'MININTER/AUDIENCE: Inscription réussie',
+      html: mailBody,
+      attachDataUrls: true,
+      attachments: [
+        {
+          filename: 'mid-logo.jpg',
+          path: '../mid-backend/src/assets/mid-logo.jpg',
+          cid: 'mid',
+        },
+      ],
+    });
+    return response;
+  }
 
   //Update request
   async updateRequest(id: string, updateRequestDto) {
@@ -474,8 +508,6 @@ export class RequestService {
 
   //Delete request by user id
   async deleteManyRequestByUserId(user: string) {
-    await this.requestModel
-      .deleteMany({ user })
-      .exec();
+    await this.requestModel.deleteMany({ user }).exec();
   }
 }

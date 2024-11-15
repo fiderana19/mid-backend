@@ -5,7 +5,10 @@ import { AuthModule } from 'src/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
 import { AvailabilityService } from 'src/availability/availability.service';
-import { Availability, AvailabilitySchema } from 'src/schema/availability.schema';
+import {
+  Availability,
+  AvailabilitySchema,
+} from 'src/schema/availability.schema';
 import { MailingModule } from 'src/mailing/mailing.module';
 import { User, UserSchema } from 'src/schema/user.schema';
 import { Request, RequestSchema } from 'src/schema/request.schema';
@@ -25,7 +28,13 @@ import { JwtService } from '@nestjs/jwt';
     ]),
   ],
   controllers: [AudienceController],
-  providers: [AudienceService, AvailabilityService, RequestService, AuthService, JwtService],
+  providers: [
+    AudienceService,
+    AvailabilityService,
+    RequestService,
+    AuthService,
+    JwtService,
+  ],
   exports: [AudienceService],
 })
 export class AudienceModule {}

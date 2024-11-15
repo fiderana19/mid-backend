@@ -14,9 +14,15 @@ export const mapAudience = (audiences: any) => {
     user_cni: audience.user ? audience.user.cni : '',
     user_profile_photo: audience.user ? audience.user.profile_photo : '',
     availability: audience.availability ? audience.availability._id : '',
-    availability_date: audience.availability ? formatDate(audience.availability.date_availability) : '',
-    availability_hour_debut: audience.availability ? formatTime(audience.availability.hour_debut) : '',
-    availability_hour_end: audience.availability ? formatTime(audience.availability.hour_end) : '',
+    availability_date: audience.availability
+      ? formatDate(audience.availability.date_availability)
+      : '',
+    availability_hour_debut: audience.availability
+      ? formatTime(audience.availability.hour_debut)
+      : '',
+    availability_hour_end: audience.availability
+      ? formatTime(audience.availability.hour_end)
+      : '',
     request: audience.request ? audience.request._id : '',
     request_object: audience.request ? audience.request.object : '',
     request_type: audience.request ? audience.request.type_request : '',
@@ -37,14 +43,26 @@ export const mapSingleAudience = (audience: any) => {
     user_telephone: audience.user ? audience.user.telephone : '',
     user_profile_photo: audience.user ? audience.user.profile_photo : '',
     availability: audience.availability ? audience.availability._id : '',
-    availability_date: audience.availability ? formatDate(audience.availability.date_availability) : '',
-    availability_hour_debut: audience.availability ? formatTime(audience.availability.hour_debut) : '',
-    availability_hour_end: audience.availability ? formatTime(audience.availability.hour_end) : '',
+    availability_date: audience.availability
+      ? formatDate(audience.availability.date_availability)
+      : '',
+    availability_hour_debut: audience.availability
+      ? formatTime(audience.availability.hour_debut)
+      : '',
+    availability_hour_end: audience.availability
+      ? formatTime(audience.availability.hour_end)
+      : '',
     request: audience.request ? audience.request._id : '',
     request_object: audience.request ? audience.request.object : '',
     request_type: audience.request ? audience.request.type_request : '',
-    request_date_wanted_debut_initial: audience.request ? audience.request.date_wanted_debut : '',
-    request_date_wanted_end_initial: audience.request ? audience.request.date_wanted_end : '',
-    date_initial: audience.availability ? audience.availability.date_availability : '',
+    request_date_wanted_debut_initial: audience.request
+      ? audience.request.date_wanted_debut
+      : '',
+    request_date_wanted_end_initial: audience.request
+      ? audience.request.date_wanted_end
+      : '',
+    date_initial: audience.availability
+      ? audience.availability.date_availability
+      : '',
   };
 };

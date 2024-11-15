@@ -27,13 +27,13 @@ export class AuthService {
 
   //Get all user
   async getAuth(): Promise<any> {
-    const users = await this.userModel.find({ roles: "user" }).exec();
+    const users = await this.userModel.find({ roles: 'user' }).exec();
     return mapUser(users);
   }
 
   //Signup
   async signUp(signUpDto, profile_photo, cni_photo): Promise<any> {
-    // console.log('1 image : ', profile_photo , '2 image : ', cni_photo);
+    // Converting images to base64
     const profile_photob64 = profile_photo[0].buffer.toString('base64');
     const cni_photob64 = cni_photo[0].buffer.toString('base64');
 
@@ -41,7 +41,7 @@ export class AuthService {
       nom,
       prenom,
       email,
-      adresse, 
+      adresse,
       telephone,
       date_naissance,
       lieu_naissance,
@@ -50,13 +50,16 @@ export class AuthService {
       lieu_cni,
     } = signUpDto;
 
+    // Converting nom to uppercase
+    const nom2uppercase = nom.toUpperCase();
+    //Generating random password
     const randomPassword = generateRandom6digits();
-
+    // Hashing the password
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     const hashedReal = hashedPassword.toString();
-
+    // Creating the user
     await this.userModel.create({
-      nom,
+      nom: nom2uppercase,
       prenom,
       email,
       telephone,
@@ -70,8 +73,6 @@ export class AuthService {
       cni_photo: cni_photob64,
       password: hashedReal,
     });
-
-    const qrCodeDataToURL = await qrcode.toDataURL('Messi');
 
     const mailBody = `
       <html lang="en">
@@ -231,27 +232,32 @@ export class AuthService {
     </body>
     </html>
     `;
-
+    // Sending email
     await this.mailerService.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "MININTER/AUDIENCE: Inscription réussie",
+      subject: 'MININTER/AUDIENCE: Inscription réussie',
       html: mailBody,
       attachDataUrls: true,
-      attachments: [{
-        filename: 'mid-logo.jpg',
-        path: '../mid-backend/src/assets/mid-logo.jpg',
-        cid: 'mid'
-      }]
-    })
+      attachments: [
+        {
+          filename: 'mid-logo.jpg',
+          path: '../mid-backend/src/assets/mid-logo.jpg',
+          cid: 'mid',
+        },
+      ],
+    });
 
-    return { message: 'Les informations sont envoyés avec succés', initialPwd: randomPassword };
+    return {
+      message: 'Les informations sont envoyés avec succés',
+      initialPwd: randomPassword,
+    };
   }
 
   //Login
   async login(loginDto): Promise<any> {
     const { email, password } = loginDto;
-  
+
     const user = await this.userModel.findOne({ email });
 
     //If the user didn't exist
@@ -445,19 +451,28 @@ export class AuthService {
 
   `;
 
-  await this.mailerService.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "MININTER/AUDIENCE: Inscription réussie",
-    html: mailBody,
-    attachDataUrls: true,
-    attachments: [{
-      filename: 'mid-logo.jpg',
-      path: '../mid-backend/src/assets/mid-logo.jpg',
-      cid: 'mid'
-    }]
-  })
-    return await this.userModel.findByIdAndUpdate(id, { validation: true }).exec();
+    // Validating the user
+    const response = await this.userModel
+      .findByIdAndUpdate(id, { validation: true })
+      .exec();
+
+    // Sending mail
+    await this.mailerService.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'MININTER/AUDIENCE: Inscription réussie',
+      html: mailBody,
+      attachDataUrls: true,
+      attachments: [
+        {
+          filename: 'mid-logo.jpg',
+          path: '../mid-backend/src/assets/mid-logo.jpg',
+          cid: 'mid',
+        },
+      ],
+    });
+
+    return response;
   }
 
   //Get User by id
@@ -501,12 +516,19 @@ export class AuthService {
   }
 
   //Update user password for first login
-  async initializePassword(id: string, updateUser: UpdateUserPasswordForFirstLogin) {
+  async initializePassword(
+    id: string,
+    updateUser: UpdateUserPasswordForFirstLogin,
+  ) {
     const { password } = updateUser;
-    const hashedPassword = await bcrypt.hash(password,10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     return await this.userModel
-      .findByIdAndUpdate(id, { password: hashedPassword, is_not_first_login: true }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { password: hashedPassword, is_not_first_login: true },
+        { new: true },
+      )
       .exec();
   }
 
@@ -694,28 +716,41 @@ export class AuthService {
     </body>
     </html>
     `;
+    // Deleting the user
+    const response = await this.userModel.findByIdAndDelete(id).exec();
+    // Sending mail
+    await this.mailerService.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'MININTER/AUDIENCE: Inscription réussie',
+      html: mailBody,
+      attachDataUrls: true,
+      attachments: [
+        {
+          filename: 'mid-logo.jpg',
+          path: '../mid-backend/src/assets/mid-logo.jpg',
+          cid: 'mid',
+        },
+      ],
+    });
 
-  await this.mailerService.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "MININTER/AUDIENCE: Inscription réussie",
-    html: mailBody,
-    attachDataUrls: true,
-    attachments: [{
-      filename: 'mid-logo.jpg',
-      path: '../mid-backend/src/assets/mid-logo.jpg',
-      cid: 'mid'
-    }]
-  })
-    
-    return await this.userModel.findByIdAndDelete(id).exec();
+    return response;
   }
 
   async countUserStat() {
-    const total_user = await this.userModel.find({ roles : "user" }).countDocuments().exec();
-    const total_user_valid = await this.userModel.find({ roles : "user", validation : false }).countDocuments().exec();
-    const total_user_notvalid = await this.userModel.find({ roles : "user", validation : true }).countDocuments().exec();
-    
+    const total_user = await this.userModel
+      .find({ roles: 'user' })
+      .countDocuments()
+      .exec();
+    const total_user_valid = await this.userModel
+      .find({ roles: 'user', validation: false })
+      .countDocuments()
+      .exec();
+    const total_user_notvalid = await this.userModel
+      .find({ roles: 'user', validation: true })
+      .countDocuments()
+      .exec();
+
     return { total_user, total_user_valid, total_user_notvalid };
   }
 }

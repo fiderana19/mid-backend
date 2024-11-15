@@ -10,9 +10,7 @@ import { MailingModule } from 'src/mailing/mailing.module';
   imports: [
     MailingModule,
     AuthModule,
-    MongooseModule.forFeature([
-      { name: Request.name, schema: RequestSchema },
-    ]),
+    MongooseModule.forFeature([{ name: Request.name, schema: RequestSchema }]),
   ],
   controllers: [RequestController],
   providers: [RequestService],

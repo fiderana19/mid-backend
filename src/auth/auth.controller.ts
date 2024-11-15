@@ -22,13 +22,14 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
-import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Get('/all')
   // @Roles(Role.ADMIN)
@@ -68,15 +69,25 @@ export class AuthController {
 
   //Create user
   @Post('/signup')
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'profile_photo', maxCount: 1 },
-    { name: 'cni_photo', maxCount: 1 },
-  ]))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'profile_photo', maxCount: 1 },
+      { name: 'cni_photo', maxCount: 1 },
+    ]),
+  )
   async signUp(
     @Body() data: SignUpDto,
-    @UploadedFiles() files: { profile_photo?: Express.Multer.File[], cni_photo?: Express.Multer.File[] }
+    @UploadedFiles()
+    files: {
+      profile_photo?: Express.Multer.File[];
+      cni_photo?: Express.Multer.File[];
+    },
   ): Promise<any> {
-    return await this.authService.signUp(data,files.profile_photo,files.cni_photo);
+    return await this.authService.signUp(
+      data,
+      files.profile_photo,
+      files.cni_photo,
+    );
   }
 
   //Login
@@ -114,9 +125,7 @@ export class AuthController {
 
   //Validate user
   @Patch('/validate/:id')
-  async validateUser(
-    @Param('id') id: string,
-  ) {
+  async validateUser(@Param('id') id: string) {
     return await this.authService.validateUser(id);
   }
 
