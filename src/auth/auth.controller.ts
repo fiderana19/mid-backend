@@ -134,4 +134,10 @@ export class AuthController {
   async deleteUser(@Param() param) {
     return await this.authService.deleteUser(param.id);
   }
+
+  //Get latest user
+  @Get('/latest/')
+  async getLatestUser() {
+    return await this.authService.getLatestUser();
+  }
 }

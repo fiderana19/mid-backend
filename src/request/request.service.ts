@@ -200,4 +200,13 @@ export class RequestService {
   async deleteManyRequestByUserId(user: string) {
     await this.requestModel.deleteMany({ user }).exec();
   }
+
+  //Get request for chart
+  async getRequestForChart() {
+    const total_accepted = await this.requestModel.find({ status_request: RequestStatus.Accepted }).countDocuments().exec();
+    const total_waiting = await this.requestModel.find({ status_request: RequestStatus.Waiting }).countDocuments().exec();
+    const total_denied = await this.requestModel.find({ status_request: RequestStatus.Denied }).countDocuments().exec();
+  
+    return { total_accepted, total_waiting, total_denied }
+  }
 }

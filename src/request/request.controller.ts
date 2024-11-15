@@ -105,4 +105,10 @@ export class RequestController {
   async deleteRequest(@Param('id') id: string) {
     return await this.requestService.deleteRequest(id);
   }
+
+  //Get request for chart
+  @Get('/chart')
+  async getRequestForChart() {
+    return await this.requestService.getRequestForChart();
+  }
 }

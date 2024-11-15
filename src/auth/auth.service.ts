@@ -190,6 +190,15 @@ export class AuthService {
     return mapUser(users);
   }
 
+  //Get latest user
+  async getLatestUser() {
+    const user = await this.userModel.find({ roles: "user" })
+      .sort({ user_creation: -1 })
+      .limit(4)
+      .exec();
+    return mapUser(user);
+  }
+
   //Count user by validation
   async countUserByValidation(validation: boolean) {
     return await this.userModel.find({ validation }).countDocuments().exec();
