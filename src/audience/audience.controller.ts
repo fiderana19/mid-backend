@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { AudienceService } from './audience.service';
 import { CreateAudienceDto } from 'src/dto/create-audience.dto';
-import { TreatAudienceDto } from 'src/dto/treat-audience.dto';
 import { AvailabilityService } from 'src/availability/availability.service';
 import { AuthService } from 'src/auth/auth.service';
 import { RequestService } from 'src/request/request.service';
