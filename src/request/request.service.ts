@@ -7,6 +7,8 @@ import { mapRequest, mapSingleRequest } from 'src/mappers/request.mapper';
 import { Request } from 'src/schema/request.schema';
 import { User } from 'src/schema/user.schema';
 import { formatDate } from 'src/utils/dateformatter';
+import { setDenyRequestMail } from 'src/utils/setDenyRequestMail';
+import { setRequestApprovalMail } from 'src/utils/setRequestApprovalMail';
 
 @Injectable()
 export class RequestService {
@@ -84,164 +86,8 @@ export class RequestService {
     const end = formatDate(date_wanted_end);
     const creation = formatDate(request_creation);
     const { nom, prenom, email } = req.user;
-    const mailBody = `
-      <html lang="en">
-  <head>
-      <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-      </head>
-      <body style="background: #f1f1f1">
-        <table role="Presentation" width="100%" cellspacing="0" cellpadding="0" border="0" >
-          <tbody> 
-           <tr> 
-            <td align="left"> 
-              <!---Header--->
-              <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse!important;border-spacing:0!important;margin:0 auto!important;table-layout:fixed!important">
-                <tbody><tr>
-                  <td style="background: green">
-                    <table role="Presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: grey; padding: 10px 40px;">
-                      <tbody> 
-                      <tr> 
-                        <td align="left"> 
-                        <table style="border:none;border-collapse:collapse;display:inline-table;float:right" valign="top"  cellspacing="0" cellpadding="0" border="0" align="right"> 
-                          <tbody> 
-                            <tr> 
-                            <td valign="middle" align="left"> 
-                              <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                              <tbody> 
-                                <tr> 
-                                <td valign="middle" height="54" align="center">
-                                  <td valign="middle" height="54" align="center">
-                                    <div style="font-size: 25px;color: white;font-weight: bold; text-align: right;">
-                                      <div style="font-size: 18px;  margin: 10px 0;">
-                                        Ministère de l'Interieur
-                                      </div>
-                                      <div style="font-size: 22px;">
-                                        MININTER: Audience
-                                      </div>
-                                    </div>
-                                  </td> 
-                                </td> 
-                                </tr> 
-                              </tbody>
-                              </table>
-                            </td> 
-                            </tr> 
-                          </tbody>  
-                    </table>
-                  <table style="border:none;border-collapse:collapse;display:inline-table;" cellspacing="0" cellpadding="0" border="0" align="left"> 
-                    <tbody> 
-                    <tr> 
-                      <td valign="middle" align="left"> 
-                      <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                        <tbody> 
-                        <tr> 
-                          <img src="cid:mid" alt="Mininter Logo" style="width: 70px;height: 70px;object-fit: cover;" />
-                        </tr> 
-                        </tbody>
-                      </table>
-                      </td> 
-                    </tr> 
-                    </tbody> 
-                  </table> 
-                  </td> 
-                </tr> 
-                </tbody> 
-              </table> 
-              </td> 
-            </tr> 
-            </tbody> 
-          </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <!---Body--->
-            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse!important;border-spacing:0!important;margin:0 auto!important;table-layout:fixed!important">
-              <tbody><tr>
-                <td style="color: black;text-align:center; background: white;">
-                  <div style="text-align: center; padding: 40px;">
-                    <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Demande d'audience aprouvée !</div>
-                    <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
-                      Votre demande d'audience soumise le ${creation} de type ${type_request} pour la semaine de ${debut} à ${end} a été approuvé.<br>
-                      Vous reçevrez plus tard un email pour la date et l'heure de votre audience.
-                  </div>
-                </div>
-                  <div style="height: 1px; background: gray;"></div>
-                  <div style="padding: 40px;background: white;text-align: center; font-size: 12px; color: rgba(0,0,0,0.7);">
-                    Vous avez reçu cet email parce que votre demande d'audience a été approuvée sur le site d'audience du ministère de l'interieur.
-                  </div>
-                </td>
-              </tr>
-            </tbody></table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <!--Footer--->
-            <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse!important;border-spacing:0!important;margin:0 auto!important;table-layout:fixed!important">
-              <tbody><tr>
-                <td style="background: green">
-                  <table role="Presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: grey; padding: 40px;">
-                    <tbody> 
-                    <tr> 
-                      <td align="left"> 
-                      <table style="border:none;border-collapse:collapse;display:inline-table;float:right" valign="top"  cellspacing="0" cellpadding="0" border="0" align="right"> 
-                        <tbody> 
-                          <tr> 
-                          <td valign="middle" align="left"> 
-                            <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                            <tbody> 
-                              <tr> 
-                              <td valign="middle" height="54" align="center">
-                                <img src="cid:mid" alt="Mininter Logo" style="width: 70px;height: 70px;object-fit: cover;" />
-                              </td> 
-                              </tr> 
-                            </tbody>
-                            </table>
-                          </td> 
-                          </tr> 
-                        </tbody>  
-                  </table>
-                <table style="border:none;border-collapse:collapse;display:inline-table;" cellspacing="0" cellpadding="0" border="0" align="left"> 
-                  <tbody> 
-                  <tr> 
-                    <td valign="middle" align="left"> 
-                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                      <tbody> 
-                      <tr> 
-                        <td valign="middle" height="54" align="center">
-                          <div style="font-size: 25px;color: white;font-weight: bold; text-align: left;">
-                            <div style="font-size: 16px;">
-                              Ministère de l'Interieur
-                            </div>
-                            <div style="font-size: 20px; margin: 10px 0;">
-                              MININTER: Audience
-                            </div>
-                            <div style="font-size: 12px;">
-                              @copyright 2024
-                            </div>
-                          </div>
-                        </td> 
-                      </tr> 
-                      </tbody>
-                    </table>
-                    </td> 
-                  </tr> 
-                  </tbody> 
-                </table> 
-                </td> 
-              </tr> 
-              </tbody> 
-            </table>  
-          </td>
-        </tr>
-      </tbody></table>
-    </body>
-    </html>
-    `;
+
+    const mailBody = setRequestApprovalMail(nom, prenom,creation,type_request,debut,end);
     // Accepting request
     const response = await this.requestModel
       .findByIdAndUpdate(id, treatRequestDto, { new: true })
@@ -251,7 +97,7 @@ export class RequestService {
     await this.mailerService.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'MININTER/AUDIENCE: Inscription réussie',
+      subject: 'MININTER/AUDIENCE: Demande approuvée',
       html: mailBody,
       attachDataUrls: true,
       attachments: [
@@ -284,164 +130,8 @@ export class RequestService {
     const debut = formatDate(date_wanted_debut);
     const end = formatDate(date_wanted_end);
     const creation = formatDate(request_creation);
-    const mailBody = `
-<html lang="en">
-  <head>
-      <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-      </head>
-      <body style="background: #f1f1f1">
-        <table role="Presentation" width="100%" cellspacing="0" cellpadding="0" border="0" >
-          <tbody> 
-           <tr> 
-            <td align="left"> 
-              <!---Header--->
-              <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse!important;border-spacing:0!important;margin:0 auto!important;table-layout:fixed!important">
-                <tbody><tr>
-                  <td style="background: green">
-                    <table role="Presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: grey; padding: 10px 40px;">
-                      <tbody> 
-                      <tr> 
-                        <td align="left"> 
-                        <table style="border:none;border-collapse:collapse;display:inline-table;float:right" valign="top"  cellspacing="0" cellpadding="0" border="0" align="right"> 
-                          <tbody> 
-                            <tr> 
-                            <td valign="middle" align="left"> 
-                              <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                              <tbody> 
-                                <tr> 
-                                <td valign="middle" height="54" align="center">
-                                  <td valign="middle" height="54" align="center">
-                                    <div style="font-size: 25px;color: white;font-weight: bold; text-align: right;">
-                                      <div style="font-size: 18px;  margin: 10px 0;">
-                                        Ministère de l'Interieur
-                                      </div>
-                                      <div style="font-size: 22px;">
-                                        MININTER: Audience
-                                      </div>
-                                    </div>
-                                  </td> 
-                                </td> 
-                                </tr> 
-                              </tbody>
-                              </table>
-                            </td> 
-                            </tr> 
-                          </tbody>  
-                    </table>
-                  <table style="border:none;border-collapse:collapse;display:inline-table;" cellspacing="0" cellpadding="0" border="0" align="left"> 
-                    <tbody> 
-                    <tr> 
-                      <td valign="middle" align="left"> 
-                      <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                        <tbody> 
-                        <tr> 
-                          <img src="./mid-logo.jpg" alt="Mininter Logo" style="width: 70px;height: 70px;object-fit: cover;" />
-                        </tr> 
-                        </tbody>
-                      </table>
-                      </td> 
-                    </tr> 
-                    </tbody> 
-                  </table> 
-                  </td> 
-                </tr> 
-                </tbody> 
-              </table> 
-              </td> 
-            </tr> 
-            </tbody> 
-          </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <!---Body--->
-            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse!important;border-spacing:0!important;margin:0 auto!important;table-layout:fixed!important">
-              <tbody><tr>
-                <td style="background:white; color: black;text-align:center">
-                  <div style="padding: 40px;background: white;text-align: center;">
-                    <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Demande d'audience réfusée !</div>
-                    <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
-                      Votre demande d'audience soumise le ${creation} de type ${type_request} pour la semaine de ${debut} à ${end} a été réfusée.<br>
-                      La disponibilité du ministre pour ce semaine est chargée.
-                    </div>
-                  </div>
-                  <div style="height: 1px; background: gray;"></div>
-                  <div style="padding: 40px;background: white;text-align: center; font-size: 12px; color: rgba(0,0,0,0.7);">
-                    Vous avez reçu cet email parce que votre demande d'audience a été réfusée sur le site d'audience du ministère de l'interieur.
-                  </div>
-                </td>
-              </tr>
-            </tbody></table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <!--Footer--->
-            <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse:collapse!important;border-spacing:0!important;margin:0 auto!important;table-layout:fixed!important">
-              <tbody><tr>
-                <td style="background: green">
-                  <table role="Presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: grey; padding: 40px;">
-                    <tbody> 
-                    <tr> 
-                      <td align="left"> 
-                      <table style="border:none;border-collapse:collapse;display:inline-table;float:right" valign="top"  cellspacing="0" cellpadding="0" border="0" align="right"> 
-                        <tbody> 
-                          <tr> 
-                          <td valign="middle" align="left"> 
-                            <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                            <tbody> 
-                              <tr> 
-                              <td valign="middle" height="54" align="center">
-                                <img src="./mid-logo.jpg" alt="Mininter Logo" style="width: 70px;height: 70px;object-fit: cover;" />
-                              </td> 
-                              </tr> 
-                            </tbody>
-                            </table>
-                          </td> 
-                          </tr> 
-                        </tbody>  
-                  </table>
-                <table style="border:none;border-collapse:collapse;display:inline-table;" cellspacing="0" cellpadding="0" border="0" align="left"> 
-                  <tbody> 
-                  <tr> 
-                    <td valign="middle" align="left"> 
-                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
-                      <tbody> 
-                      <tr> 
-                        <td valign="middle" height="54" align="center">
-                          <div style="font-size: 25px;color: white;font-weight: bold; text-align: left;">
-                            <div style="font-size: 16px;">
-                              Ministère de l'Interieur
-                            </div>
-                            <div style="font-size: 20px; margin: 10px 0;">
-                              MININTER: Audience
-                            </div>
-                            <div style="font-size: 12px;">
-                              @copyright 2024
-                            </div>
-                          </div>
-                        </td> 
-                      </tr> 
-                      </tbody>
-                    </table>
-                    </td> 
-                  </tr> 
-                  </tbody> 
-                </table> 
-                </td> 
-              </tr> 
-              </tbody> 
-            </table>  
-          </td>
-        </tr>
-      </tbody></table>
-    </body>
-    </html>
-  `;
+
+    const mailBody = setDenyRequestMail(nom, prenom,creation,type_request,debut,end);
     // Denying request
     const response = await this.requestModel
       .findByIdAndUpdate(id, treatRequestDto, { new: true })
@@ -450,7 +140,7 @@ export class RequestService {
     await this.mailerService.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'MININTER/AUDIENCE: Inscription réussie',
+      subject: 'MININTER/AUDIENCE: Demande réfusée',
       html: mailBody,
       attachDataUrls: true,
       attachments: [
