@@ -108,21 +108,19 @@ export class AuthService {
 
     //If the user didn't exist
     if (!user) {
-      throw new UnauthorizedException('Invalid email');
+      throw new UnauthorizedException("Aucun compte inscrit sur cet email !");
     }
 
     //Testing the user validation
     if (!user.validation) {
-      throw new UnauthorizedException(
-        "Votre compte n'est pas encore validé par l'administrateur",
-      );
+      throw new UnauthorizedException("Votre compte n'est pas encore validé par l'administrateur !");
     }
 
     //Matching the password
     const isPasswordMatched = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatched) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException("Mot de passe incorrect !");
     }
 
     const acces_token = await this.jwtService.sign({
