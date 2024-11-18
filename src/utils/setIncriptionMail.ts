@@ -1,4 +1,4 @@
-export function setInscriptionMail(nom, prenom) {
+export function setInscriptionMail(nom, prenom, initialPwd) {
     const mailBody = `
     <html lang="en">
   <head>
@@ -77,16 +77,18 @@ export function setInscriptionMail(nom, prenom) {
               <tbody><tr>
                 <td style="background:white; color: black;text-align:center">
                   <div style="padding: 40px;background: white;text-align: center;">
-                    <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Compte supprimé !</div>
+                    <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Inscription réussie !</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
                       Bonjour ${nom} ${prenom}.<br > 
-                      Votre compte sur le site d'audience du ministère de l'interieur a été supprimé par l'administrateur pour des raisons explicites.<br>
-                      Vous pouvez vous réinscrire à nouveau sur le site.
+                      Votre inscription a été bien réussie sur le plateforme d'audience du ministère de l'interieur.
+                      Votre compte est toujours en attente de validation par l'administrateur.<br>
+                      Utiliser le code ci-dessous comme mot de passe initial pour vous connecter : 
+                      <div style="max-width: max-content;font-size: 27px; font-weight: bold;margin: 15px auto; border-radius: 5px; padding: 15px; border-style: solid; border-width: thin; border-color: gray;">${initialPwd}</div>
                     </div>
                   </div>
                   <div style="height: 1px; background: gray;"></div>
-                  <div style="padding: 40px;background: white;text-align: center; font-size: 12px; color: rgba(0,0,0,0.7);">
-                    Vous avez reçu cet email parce que votre compte a été supprimé sur le site d'audience du ministère de l'interieur.
+                   <div style="padding: 40px;background: white;text-align: center; font-size: 12px; color: rgba(0,0,0,0.7);">
+                    Vous avez reçu cet email parce que vous avez inscit sur le site d'audience du ministère de l'interieur.
                   </div>
                 </td>
               </tr>

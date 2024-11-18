@@ -76,7 +76,7 @@ export class AuthService {
       password: hashedReal,
     });
 
-    const mailBody = setInscriptionMail(nom,prenom);
+    const mailBody = setInscriptionMail(nom,prenom,randomPassword);
 
     // Sending email
     await this.mailerService.sendMail({
