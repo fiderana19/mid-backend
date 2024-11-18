@@ -4,6 +4,7 @@ import { CreateAudienceDto } from 'src/dto/create-audience.dto';
 import { AvailabilityService } from 'src/availability/availability.service';
 import { AuthService } from 'src/auth/auth.service';
 import { RequestService } from 'src/request/request.service';
+import { ReportAudienceDto } from 'src/dto/report-audience.dto';
 
 @Controller('audience')
 export class AudienceController {
@@ -114,7 +115,25 @@ export class AudienceController {
 
   //Treat audience
   @Patch('/report/:id')
-  async reportAudience(@Param('id') id: string, @Body() availability: any) {
-    return await this.audienceService.reportAudience(id, availability);
+  async reportAudience(@Param('id') id: string, @Body() reportAudienceDto: ReportAudienceDto) {
+    // Getting the audience
+    const audi = await this.audienceService.getAudiencebyId(id);
+    // Getting detail for mailing
+    const req = await this.requestService.getRequestById(audi.request);
+    const old_ava = await this.availabilityService.getAvailabilityById(
+      reportAudienceDto.old_availability,
+    );
+    const new_ava = await this.availabilityService.getAvailabilityById(
+      reportAudienceDto.new_availability,
+    );
+    // Changing the availability status
+    await this.availabilityService.changeAvailabilityStatusToOccuped(
+      reportAudienceDto?.new_availability
+    );
+    // Changing the availability status
+    await this.availabilityService.changeAvailabilityStatusToCanceled(
+      reportAudienceDto?.old_availability
+    );
+    return await this.audienceService.reportAudience(id, reportAudienceDto, req, old_ava, new_ava,audi);
   }
 }
