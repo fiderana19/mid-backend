@@ -76,7 +76,7 @@ export class AuthService {
       password: hashedReal,
     });
 
-    const mailBody = setInscriptionMail(nom,prenom,randomPassword);
+    const mailBody = setInscriptionMail(nom, prenom, randomPassword);
 
     // Sending email
     await this.mailerService.sendMail({
@@ -108,19 +108,21 @@ export class AuthService {
 
     //If the user didn't exist
     if (!user) {
-      throw new UnauthorizedException("Aucun compte inscrit sur cet email !");
+      throw new UnauthorizedException('Aucun compte inscrit sur cet email !');
     }
 
     //Testing the user validation
     if (!user.validation) {
-      throw new UnauthorizedException("Votre compte n'est pas encore validé par l'administrateur !");
+      throw new UnauthorizedException(
+        "Votre compte n'est pas encore validé par l'administrateur !",
+      );
     }
 
     //Matching the password
     const isPasswordMatched = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatched) {
-      throw new UnauthorizedException("Mot de passe incorrect !");
+      throw new UnauthorizedException('Mot de passe incorrect !');
     }
 
     const acces_token = await this.jwtService.sign({
@@ -136,7 +138,7 @@ export class AuthService {
     const user = await this.userModel.findById(id);
     const { email, nom, prenom } = user;
 
-    const mailBody = setValidateAccountMail(nom,prenom);
+    const mailBody = setValidateAccountMail(nom, prenom);
 
     // Validating the user
     const response = await this.userModel
@@ -192,7 +194,8 @@ export class AuthService {
 
   //Get latest user
   async getLatestUser() {
-    const user = await this.userModel.find({ roles: "user" })
+    const user = await this.userModel
+      .find({ roles: 'user' })
       .sort({ user_creation: -1 })
       .limit(4)
       .exec();

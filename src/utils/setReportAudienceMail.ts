@@ -1,5 +1,15 @@
-export function setReportAudienceMail(nom, prenom, old_availability, old_hour_debut, old_hour_end, new_availability, new_hour_debut, new_hour_end, qrCodeDataToURL) {
-    const mailBody = `
+export function setReportAudienceMail(
+  nom,
+  prenom,
+  old_availability,
+  old_hour_debut,
+  old_hour_end,
+  new_availability,
+  new_hour_debut,
+  new_hour_end,
+  qrCodeDataToURL,
+) {
+  const mailBody = `
       <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -162,5 +172,5 @@ export function setReportAudienceMail(nom, prenom, old_availability, old_hour_de
     </html>
 
   `;
-    return mailBody;
+  return mailBody;
 }

@@ -87,7 +87,14 @@ export class RequestService {
     const creation = formatDate(request_creation);
     const { nom, prenom, email } = req.user;
 
-    const mailBody = setRequestApprovalMail(nom, prenom,creation,type_request,debut,end);
+    const mailBody = setRequestApprovalMail(
+      nom,
+      prenom,
+      creation,
+      type_request,
+      debut,
+      end,
+    );
     // Accepting request
     const response = await this.requestModel
       .findByIdAndUpdate(id, treatRequestDto, { new: true })
@@ -131,7 +138,14 @@ export class RequestService {
     const end = formatDate(date_wanted_end);
     const creation = formatDate(request_creation);
 
-    const mailBody = setDenyRequestMail(nom, prenom,creation,type_request,debut,end);
+    const mailBody = setDenyRequestMail(
+      nom,
+      prenom,
+      creation,
+      type_request,
+      debut,
+      end,
+    );
     // Denying request
     const response = await this.requestModel
       .findByIdAndUpdate(id, treatRequestDto, { new: true })
@@ -203,10 +217,19 @@ export class RequestService {
 
   //Get request for chart
   async getRequestForChart() {
-    const total_accepted = await this.requestModel.find({ status_request: RequestStatus.Accepted }).countDocuments().exec();
-    const total_waiting = await this.requestModel.find({ status_request: RequestStatus.Waiting }).countDocuments().exec();
-    const total_denied = await this.requestModel.find({ status_request: RequestStatus.Denied }).countDocuments().exec();
-  
-    return { total_accepted, total_waiting, total_denied }
+    const total_accepted = await this.requestModel
+      .find({ status_request: RequestStatus.Accepted })
+      .countDocuments()
+      .exec();
+    const total_waiting = await this.requestModel
+      .find({ status_request: RequestStatus.Waiting })
+      .countDocuments()
+      .exec();
+    const total_denied = await this.requestModel
+      .find({ status_request: RequestStatus.Denied })
+      .countDocuments()
+      .exec();
+
+    return { total_accepted, total_waiting, total_denied };
   }
 }

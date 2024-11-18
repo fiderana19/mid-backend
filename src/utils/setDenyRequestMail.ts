@@ -1,5 +1,12 @@
-export function setDenyRequestMail(nom, prenom, creation, type_request, debut, end) {
-    const mailBody = `
+export function setDenyRequestMail(
+  nom,
+  prenom,
+  creation,
+  type_request,
+  debut,
+  end,
+) {
+  const mailBody = `
 <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -157,5 +164,5 @@ export function setDenyRequestMail(nom, prenom, creation, type_request, debut, e
     </body>
     </html>
   `;
-    return mailBody;
+  return mailBody;
 }

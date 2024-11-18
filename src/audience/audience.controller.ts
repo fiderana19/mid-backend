@@ -115,7 +115,10 @@ export class AudienceController {
 
   //Treat audience
   @Patch('/report/:id')
-  async reportAudience(@Param('id') id: string, @Body() reportAudienceDto: ReportAudienceDto) {
+  async reportAudience(
+    @Param('id') id: string,
+    @Body() reportAudienceDto: ReportAudienceDto,
+  ) {
     // Getting the audience
     const audi = await this.audienceService.getAudiencebyId(id);
     // Getting detail for mailing
@@ -128,12 +131,19 @@ export class AudienceController {
     );
     // Changing the availability status
     await this.availabilityService.changeAvailabilityStatusToOccuped(
-      reportAudienceDto?.new_availability
+      reportAudienceDto?.new_availability,
     );
     // Changing the availability status
     await this.availabilityService.changeAvailabilityStatusToCanceled(
-      reportAudienceDto?.old_availability
+      reportAudienceDto?.old_availability,
     );
-    return await this.audienceService.reportAudience(id, reportAudienceDto, req, old_ava, new_ava,audi);
+    return await this.audienceService.reportAudience(
+      id,
+      reportAudienceDto,
+      req,
+      old_ava,
+      new_ava,
+      audi,
+    );
   }
 }

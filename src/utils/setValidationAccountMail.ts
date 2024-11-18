@@ -1,5 +1,5 @@
 export function setValidateAccountMail(nom, prenom) {
-    const mailBody = `
+  const mailBody = `
     <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -158,5 +158,5 @@ export function setValidateAccountMail(nom, prenom) {
     </html>
 
   `;
-    return mailBody;
+  return mailBody;
 }

@@ -1,5 +1,5 @@
 export function setDeleteAccountMail(nom, prenom) {
-    const mailBody = `
+  const mailBody = `
     <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -157,5 +157,5 @@ export function setDeleteAccountMail(nom, prenom) {
     </body>
     </html>
     `;
-    return mailBody;
+  return mailBody;
 }

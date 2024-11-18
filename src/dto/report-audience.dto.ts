@@ -1,6 +1,5 @@
-
 export class ReportAudienceDto {
-    old_availability: string;
+  old_availability: string;
 
-    new_availability: string;
+  new_availability: string;
 }

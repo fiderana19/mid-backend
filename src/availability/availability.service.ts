@@ -80,11 +80,11 @@ export class AvailabilityService {
   }
 
   //Change availability status after audience created
-    async changeAvailabilityStatusToCanceled(id: string) {
-      await this.availabilityModel
-        .findByIdAndUpdate(id, {
-          status_availability: AvailabilityStatus.Canceled,
-        })
-        .exec();
-    }
+  async changeAvailabilityStatusToCanceled(id: string) {
+    await this.availabilityModel
+      .findByIdAndUpdate(id, {
+        status_availability: AvailabilityStatus.Canceled,
+      })
+      .exec();
+  }
 }

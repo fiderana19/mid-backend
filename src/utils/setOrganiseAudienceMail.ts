@@ -1,5 +1,14 @@
-export function setOrganizeAudienceMail(nom, prenom,date_availability, hour_debut, hour_end, type_request, request_creation, qrCodeDataToURL) {
-    const mailBody = `
+export function setOrganizeAudienceMail(
+  nom,
+  prenom,
+  date_availability,
+  hour_debut,
+  hour_end,
+  type_request,
+  request_creation,
+  qrCodeDataToURL,
+) {
+  const mailBody = `
       <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -162,5 +171,5 @@ export function setOrganizeAudienceMail(nom, prenom,date_availability, hour_debu
     </html>
 
   `;
-    return mailBody;
+  return mailBody;
 }

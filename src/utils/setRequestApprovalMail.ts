@@ -1,5 +1,12 @@
-export function setRequestApprovalMail(nom, prenom, creation, type_request, debut, end) {
-    const mailBody = `
+export function setRequestApprovalMail(
+  nom,
+  prenom,
+  creation,
+  type_request,
+  debut,
+  end,
+) {
+  const mailBody = `
       <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -157,5 +164,5 @@ export function setRequestApprovalMail(nom, prenom, creation, type_request, debu
     </body>
     </html>
     `;
-    return mailBody;
+  return mailBody;
 }

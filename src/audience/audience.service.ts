@@ -70,7 +70,16 @@ export class AudienceService {
     // Generate qr code for mailing
     const qrCodeDataToURL = await qrcode.toDataURL(ref_audience);
 
-    const mailBody = setOrganizeAudienceMail(nom, prenom,date_availability,hour_debut,hour_end,type_request,request_creation,qrCodeDataToURL);
+    const mailBody = setOrganizeAudienceMail(
+      nom,
+      prenom,
+      date_availability,
+      hour_debut,
+      hour_end,
+      type_request,
+      request_creation,
+      qrCodeDataToURL,
+    );
 
     //Creating the audience
     const response = await this.audienceModel.create({
@@ -108,7 +117,13 @@ export class AudienceService {
     const email = user_email;
     const { date_availability, hour_debut, hour_end } = ava;
 
-    const mailBody = setCancelAudienceMail(nom, prenom,date_availability,hour_debut,hour_end);
+    const mailBody = setCancelAudienceMail(
+      nom,
+      prenom,
+      date_availability,
+      hour_debut,
+      hour_end,
+    );
 
     // Updating audience
     const response = await this.audienceModel
@@ -189,45 +204,71 @@ export class AudienceService {
       .exec();
   }
 
-  async reportAudience(id: string, reportAudienceDto: ReportAudienceDto, req, old_ava, new_ava, audi) {
-       // Request detail for email
-       const { user_nom, user_prenom, user_email } = req;
-       const nom = user_nom;
-       const prenom = user_prenom;
-       const email = user_email;
-       const old_availability = old_ava.date_availability;
-       const old_hour_debut = old_ava.hour_debut;
-       const old_hour_end = old_ava.hour_end;
-       const new_availability = new_ava.date_availability;
-       const new_hour_debut = new_ava.hour_debut;
-       const new_hour_end = new_ava.hour_end;
-       const ref = audi.ref_audience;
-       const qrCodeDataToURL = await qrcode.toDataURL(ref);
+  async reportAudience(
+    id: string,
+    reportAudienceDto: ReportAudienceDto,
+    req,
+    old_ava,
+    new_ava,
+    audi,
+  ) {
+    // Request detail for email
+    const { user_nom, user_prenom, user_email } = req;
+    const nom = user_nom;
+    const prenom = user_prenom;
+    const email = user_email;
+    const old_availability = old_ava.date_availability;
+    const old_hour_debut = old_ava.hour_debut;
+    const old_hour_end = old_ava.hour_end;
+    const new_availability = new_ava.date_availability;
+    const new_hour_debut = new_ava.hour_debut;
+    const new_hour_end = new_ava.hour_end;
+    const ref = audi.ref_audience;
+    const qrCodeDataToURL = await qrcode.toDataURL(ref);
 
-       console.log(nom, prenom)
-       console.log(email, old_availability, old_hour_debut, old_hour_end)
-       console.log(email, new_availability, new_hour_debut, ref)
-   
-       const mailBody = setReportAudienceMail(nom, prenom,old_availability,old_hour_debut,old_hour_end,new_availability, new_hour_debut, new_hour_end,qrCodeDataToURL);
-   
-      //Report audience
-      const response = await this.audienceModel.findByIdAndUpdate(id, {availability: reportAudienceDto?.new_availability, status_audience: AudienceStatus.Postponed}, {new: true}).exec();
+    console.log(nom, prenom);
+    console.log(email, old_availability, old_hour_debut, old_hour_end);
+    console.log(email, new_availability, new_hour_debut, ref);
 
-       // Sending mail
-       await this.mailerService.sendMail({
-         from: process.env.EMAIL_USER,
-         to: email,
-         subject: 'MININTER/AUDIENCE: Audience reportée',
-         html: mailBody,
-         attachDataUrls: true,
-         attachments: [
-           {
-             filename: 'mid-logo.jpg',
-             path: '../mid-backend/src/assets/mid-logo.jpg',
-             cid: 'mid',
-           },
-         ],
-       });
-      return response;
+    const mailBody = setReportAudienceMail(
+      nom,
+      prenom,
+      old_availability,
+      old_hour_debut,
+      old_hour_end,
+      new_availability,
+      new_hour_debut,
+      new_hour_end,
+      qrCodeDataToURL,
+    );
+
+    //Report audience
+    const response = await this.audienceModel
+      .findByIdAndUpdate(
+        id,
+        {
+          availability: reportAudienceDto?.new_availability,
+          status_audience: AudienceStatus.Postponed,
+        },
+        { new: true },
+      )
+      .exec();
+
+    // Sending mail
+    await this.mailerService.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'MININTER/AUDIENCE: Audience reportée',
+      html: mailBody,
+      attachDataUrls: true,
+      attachments: [
+        {
+          filename: 'mid-logo.jpg',
+          path: '../mid-backend/src/assets/mid-logo.jpg',
+          cid: 'mid',
+        },
+      ],
+    });
+    return response;
   }
 }

@@ -1,5 +1,11 @@
-export function setCancelAudienceMail(nom, prenom,date_availability, hour_debut, hour_end) {
-    const mailBody = `
+export function setCancelAudienceMail(
+  nom,
+  prenom,
+  date_availability,
+  hour_debut,
+  hour_end,
+) {
+  const mailBody = `
     <html lang="en">
       <head>
           <meta charset="UTF-8" />
@@ -157,5 +163,5 @@ export function setCancelAudienceMail(nom, prenom,date_availability, hour_debut,
         </body>
         </html>
           `;
-    return mailBody;
+  return mailBody;
 }

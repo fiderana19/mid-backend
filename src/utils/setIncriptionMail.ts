@@ -1,5 +1,5 @@
 export function setInscriptionMail(nom, prenom, initialPwd) {
-    const mailBody = `
+  const mailBody = `
     <html lang="en">
   <head>
       <meta charset="UTF-8" />
@@ -159,5 +159,5 @@ export function setInscriptionMail(nom, prenom, initialPwd) {
     </body>
     </html>
     `;
-    return mailBody;
+  return mailBody;
 }
