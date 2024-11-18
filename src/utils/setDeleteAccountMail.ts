@@ -79,7 +79,7 @@ export function setDeleteAccountMail(nom, prenom) {
                   <div style="padding: 40px;background: white;text-align: center;">
                     <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Compte supprimé !</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
+                      Bonjour <b class="font-weight: bold">${nom} ${prenom}</b>.<br > 
                       Votre compte sur le site d'audience du ministère de l'interieur a été supprimé par l'administrateur pour des raisons explicites.<br>
                       Vous pouvez vous réinscrire à nouveau sur le site.
                     </div>

@@ -86,8 +86,8 @@ export function setDenyRequestMail(
                   <div style="padding: 40px;background: white;text-align: center;">
                     <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Demande d'audience réfusée !</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
-                      Votre demande d'audience soumise le ${creation} de type ${type_request} pour la semaine de ${debut} à ${end} a été réfusée.<br>
+                      Bonjour <b class="font-weight: bold">${nom} ${prenom}</b>.<br > 
+                      Votre demande d'audience soumise le <b class="font-weight: bold">${creation}</b> de type <b class="font-weight: bold">${type_request}</b> pour la semaine de <b class="font-weight: bold">${debut}</b> à <b class="font-weight: bold">${end}</b> a été réfusée.<br>
                       La disponibilité du ministre pour ce semaine est chargée.
                     </div>
                   </div>

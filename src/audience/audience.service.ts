@@ -226,10 +226,6 @@ export class AudienceService {
     const ref = audi.ref_audience;
     const qrCodeDataToURL = await qrcode.toDataURL(ref);
 
-    console.log(nom, prenom);
-    console.log(email, old_availability, old_hour_debut, old_hour_end);
-    console.log(email, new_availability, new_hour_debut, ref);
-
     const mailBody = setReportAudienceMail(
       nom,
       prenom,
@@ -271,4 +267,22 @@ export class AudienceService {
     });
     return response;
   }
+
+    //Get request for chart
+    async getAudienceForChart() {
+      const total_fixed = await this.audienceModel
+        .find({ status_audience: AudienceStatus.Fixed })
+        .countDocuments()
+        .exec();
+      const total_postponed = await this.audienceModel
+        .find({ status_audience: AudienceStatus.Postponed })
+        .countDocuments()
+        .exec();
+      const total_canceled = await this.audienceModel
+        .find({ status_audience: AudienceStatus.Canceled })
+        .countDocuments()
+        .exec();
+  
+      return { total_fixed, total_postponed, total_canceled };
+    }
 }

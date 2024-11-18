@@ -89,8 +89,8 @@ export function setReportAudienceMail(
                   <div style="padding: 40px;background: white;text-align: center;">
                     <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Audience Reporté</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
-                      Votre audience avec le ministre le ${old_availability} de ${old_hour_debut} à ${old_hour_end} a été reporté pour la date de ${new_availability} de ${new_hour_debut} à ${new_hour_end} .<br>
+                      Bonjour <b class="font-weight: bold">${nom} ${prenom}</b>.<br > 
+                      Votre audience avec le ministre le <b class="font-weight: bold">${old_availability}</b> de <b class="font-weight: bold">${old_hour_debut}</b> à <b class="font-weight: bold">${old_hour_end}</b> a été reporté pour la date de <b class="font-weight: bold">${new_availability}</b> de <b class="font-weight: bold">${new_hour_debut}</b> à <b class="font-weight: bold">${new_hour_end}</b> .<br>
                       Ce report est dû au changement de la disponbilité du ministre .<br >
                       Ci-joint votre QR code, votre ticket d'entrée. N'oubliez pas votre carte d'identité.
                       <div>

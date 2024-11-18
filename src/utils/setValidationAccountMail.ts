@@ -79,7 +79,7 @@ export function setValidateAccountMail(nom, prenom) {
                   <div style="padding: 40px;background: white;text-align: center;">
                     <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Compte validé !</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
+                      Bonjour <b class="font-weight: bold;">${nom} ${prenom}</b>.<br > 
                       Votre compte a été validé par l'administrateur.<br>
                       Vous pouvez maintenant vous connecter en utilisant votre mot de passe initial.
                     </div>

@@ -85,8 +85,8 @@ export function setCancelAudienceMail(
                       <div style="padding: 40px;background: white;text-align: center;">
                         <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Audience annulé !</div>
                         <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                          Bonjour ${nom} ${prenom}.<br > 
-                          Le ministère de l'interieur s'excuse parce que votre audience avec le ministre le ${date_availability} de ${hour_debut} à ${hour_end} a été annulée.<br>
+                          Bonjour <b class="font-weight: bold">${nom} ${prenom}</b>.<br > 
+                          Le ministère de l'interieur s'excuse parce que votre audience avec le ministre le <b class="font-weight: bold">${date_availability}</b> de <b class="font-weight: bold">${hour_debut}</b> à <b class="font-weight: bold">${hour_end}</b> a été annulée.<br>
                           Le ministre a des occupations urgentes pour ce date.
                         </div>
                       </div>

@@ -33,6 +33,12 @@ export class AudienceController {
     return await this.audienceService.getAudiencebyId(id);
   }
 
+  //Get audience for chart
+  @Get('/chart')
+  async getAudienceForChart() {
+    return await this.audienceService.getAudienceForChart();
+  }
+
   //Count audience by status
   @Get('/count/status/:status_audience')
   async countAudienceByStatus(

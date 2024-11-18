@@ -88,9 +88,9 @@ export function setOrganizeAudienceMail(
                   <div style="padding: 40px;background: white;text-align: center;">
                     <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Invitation pour une audience</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
-                      Le ministère de l'interieur a le plaisir de vous compter comme ivité à l'occasion d'une audience avec le ministre le ${date_availability} de ${hour_debut} à ${hour_end} .<br>
-                      Cette audience est organisé par votre demande soumise le ${request_creation} pour ${type_request} .<br>
+                      Bonjour <b class="font-weight: bold">${nom} ${prenom}</b>.<br > 
+                      Le ministère de l'interieur a le plaisir de vous compter comme ivité à l'occasion d'une audience avec le ministre le <b class="font-weight: bold">${date_availability}</b> de <b class="font-weight: bold">${hour_debut}</b> à <b class="font-weight: bold">${hour_end}</b> .<br>
+                      Cette audience est organisé par votre demande soumise le <b class="font-weight: bold">${request_creation}</b> pour <b class="font-weight: bold">${type_request}</b> .<br>
                       Ci-joint votre QR code, votre ticket d'entrée. N'oubliez pas votre carte d'identité.
                       <div>
                         <img  src=${qrCodeDataToURL} alt="QR Code" width=250 height=250 style="object-fit: cover; margin: 0 auto;" />

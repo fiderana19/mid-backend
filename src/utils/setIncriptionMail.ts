@@ -79,7 +79,7 @@ export function setInscriptionMail(nom, prenom, initialPwd) {
                   <div style="padding: 40px;background: white;text-align: center;">
                     <div style="font-size: 25px; font-weight: bold;margin-bottom: 15px;">Inscription réussie !</div>
                     <div style="font-size: 15px;margin-bottom: 15px; color: rgba(0,0,0,0.7);">
-                      Bonjour ${nom} ${prenom}.<br > 
+                      Bonjour <b class="font-weight: bold">${nom} ${prenom}</b> .<br > 
                       Votre inscription a été bien réussie sur le plateforme d'audience du ministère de l'interieur.
                       Votre compte est toujours en attente de validation par l'administrateur.<br>
                       Utiliser le code ci-dessous comme mot de passe initial pour vous connecter : 
