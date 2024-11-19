@@ -29,7 +29,7 @@ export class AudienceService {
         '_id nom prenom email cni telephone adresse profile_photo',
       )
       .populate('availability', '_id date_availability hour_debut hour_end')
-      .populate('request', '_id object type_request')
+      .populate('request', '_id object request_creation type_request')
       .exec();
     return mapAudience(audiences);
   }
@@ -44,7 +44,23 @@ export class AudienceService {
       .populate('availability', '_id date_availability hour_debut hour_end')
       .populate(
         'request',
-        '_id object type_request date_wanted_debut date_wanted_end',
+        '_id object type_request request_creation date_wanted_debut date_wanted_end',
+      )
+      .exec();
+    return mapSingleAudience(audience);
+  }
+
+  async getAudienceByRef(ref_audience: string) {
+    const audience = await this.audienceModel
+      .findOne({ ref_audience })
+      .populate(
+        'user',
+        '_id nom prenom email cni telephone adresse profile_photo',
+      )
+      .populate('availability', '_id date_availability hour_debut hour_end')
+      .populate(
+        'request',
+        '_id object type_request request_creation date_wanted_debut date_wanted_end',
       )
       .exec();
     return mapSingleAudience(audience);
@@ -179,7 +195,7 @@ export class AudienceService {
         '_id nom prenom email cni telephone adresse profile_photo',
       )
       .populate('availability', '_id date_availability hour_debut hour_end')
-      .populate('request', '_id object type_request')
+      .populate('request', '_id request_creation object type_request')
       .exec();
     return mapAudience(audiences);
   }

@@ -33,6 +33,12 @@ export class AudienceController {
     return await this.audienceService.getAudiencebyId(id);
   }
 
+  //Get audience by ref
+  @Get('/ref/:ref_audience')
+  async getAudienceByRef(@Param('ref_audience') ref_audience: string) {
+    return await this.audienceService.getAudienceByRef(ref_audience);
+  }
+
   //Get audience for chart
   @Get('/chart')
   async getAudienceForChart() {
