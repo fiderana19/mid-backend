@@ -25,7 +25,9 @@ export const mapAudience = (audiences: any) => {
       : '',
     request: audience.request ? audience.request._id : '',
     request_object: audience.request ? audience.request.object : '',
-    request_creation: audience.request ? formatDate(audience.request.request_creation) : '',
+    request_creation: audience.request
+      ? formatDate(audience.request.request_creation)
+      : '',
     request_type: audience.request ? audience.request.type_request : '',
   }));
 };
@@ -56,7 +58,9 @@ export const mapSingleAudience = (audience: any) => {
     request: audience.request ? audience.request._id : '',
     request_object: audience.request ? audience.request.object : '',
     request_type: audience.request ? audience.request.type_request : '',
-    request_creation: audience.request ? formatDate(audience.request.request_creation) : '',
+    request_creation: audience.request
+      ? formatDate(audience.request.request_creation)
+      : '',
     request_date_wanted_debut_initial: audience.request
       ? audience.request.date_wanted_debut
       : '',

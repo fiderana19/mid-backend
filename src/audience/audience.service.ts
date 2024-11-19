@@ -284,21 +284,21 @@ export class AudienceService {
     return response;
   }
 
-    //Get request for chart
-    async getAudienceForChart() {
-      const total_fixed = await this.audienceModel
-        .find({ status_audience: AudienceStatus.Fixed })
-        .countDocuments()
-        .exec();
-      const total_postponed = await this.audienceModel
-        .find({ status_audience: AudienceStatus.Postponed })
-        .countDocuments()
-        .exec();
-      const total_canceled = await this.audienceModel
-        .find({ status_audience: AudienceStatus.Canceled })
-        .countDocuments()
-        .exec();
-  
-      return { total_fixed, total_postponed, total_canceled };
-    }
+  //Get request for chart
+  async getAudienceForChart() {
+    const total_fixed = await this.audienceModel
+      .find({ status_audience: AudienceStatus.Fixed })
+      .countDocuments()
+      .exec();
+    const total_postponed = await this.audienceModel
+      .find({ status_audience: AudienceStatus.Postponed })
+      .countDocuments()
+      .exec();
+    const total_canceled = await this.audienceModel
+      .find({ status_audience: AudienceStatus.Canceled })
+      .countDocuments()
+      .exec();
+
+    return { total_fixed, total_postponed, total_canceled };
+  }
 }
