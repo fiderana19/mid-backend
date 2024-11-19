@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RequestStatus } from 'src/enums/requeststatuts.enum';
 import { mapRequest, mapSingleRequest } from 'src/mappers/request.mapper';
+import { Audience } from 'src/schema/audience.schema';
 import { Request } from 'src/schema/request.schema';
 import { User } from 'src/schema/user.schema';
 import { formatDate } from 'src/utils/dateformatter';
@@ -15,6 +16,8 @@ export class RequestService {
   constructor(
     @InjectModel(Request.name)
     private requestModel: Model<Request>,
+    @InjectModel(Audience.name)
+    private audienceModel: Model<Audience>,
     private mailerService: MailerService,
   ) {}
 
@@ -29,6 +32,22 @@ export class RequestService {
       .exec();
 
     return mapRequest(req);
+  }
+
+  //Get accepted request not organized
+  async getNotOrganizedRequest(): Promise<any> {
+    const requests = await this.audienceModel.distinct('request');
+
+    const response = await this.requestModel.find({
+      status_request: RequestStatus.Accepted,
+      _id: { $nin: requests },
+    })
+    .populate(
+      'user',
+      '_id nom prenom cni adresse email telephone profile_photo',
+    );
+
+    return mapRequest(response);
   }
 
   //Get request by id

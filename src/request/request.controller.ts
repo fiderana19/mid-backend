@@ -30,6 +30,12 @@ export class RequestController {
     return this.requestService.getRequest();
   }
 
+  //Get request not organized
+  @Get('/fail')
+  async getNotOrganizedRequest() {
+    return await this.requestService.getNotOrganizedRequest();
+  }
+
   //Create request
   @Post('/create')
   @UseGuards(AuthGuard())
