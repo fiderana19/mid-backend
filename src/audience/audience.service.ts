@@ -34,6 +34,21 @@ export class AudienceService {
     return mapAudience(audiences);
   }
 
+  //Get last audience
+  async getLastAudience() {
+    const audiences = await this.audienceModel
+      .findOne()
+      .sort({ audience_creation: -1 })
+      .populate(
+        'user',
+        '_id nom prenom email cni telephone adresse profile_photo',
+      )
+      .populate('availability', '_id date_availability hour_debut hour_end')
+      .populate('request', '_id object request_creation type_request')
+      .exec();
+    return mapSingleAudience(audiences);
+  }
+
   async getAudiencebyId(id: string) {
     const audience = await this.audienceModel
       .findById(id)

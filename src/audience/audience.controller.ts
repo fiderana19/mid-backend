@@ -21,6 +21,12 @@ export class AudienceController {
     return await this.audienceService.getAllAudience();
   }
 
+  //Getting the last audience
+  @Get('/last')
+  async getLastAudience() {
+    return await this.audienceService.getLastAudience();
+  }
+
   //Count all the audience
   @Get('/count/all')
   async countAllAudience() {
