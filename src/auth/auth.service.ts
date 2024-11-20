@@ -286,11 +286,11 @@ export class AuthService {
       .countDocuments()
       .exec();
     const total_user_valid = await this.userModel
-      .find({ roles: 'user', validation: false })
+      .find({ roles: 'user', validation: true })
       .countDocuments()
       .exec();
     const total_user_notvalid = await this.userModel
-      .find({ roles: 'user', validation: true })
+      .find({ roles: 'user', validation: false })
       .countDocuments()
       .exec();
 
