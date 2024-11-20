@@ -321,6 +321,14 @@ export class AudienceService {
 
   //Get request for chart
   async getAudienceForChart() {
+    const total_closed = await this.audienceModel
+    .find({ status_audience: AudienceStatus.Closed })
+    .countDocuments()
+    .exec();
+    const total_missed = await this.audienceModel
+      .find({ status_audience: AudienceStatus.Missed })
+      .countDocuments()
+      .exec();
     const total_fixed = await this.audienceModel
       .find({ status_audience: AudienceStatus.Fixed })
       .countDocuments()
@@ -334,6 +342,6 @@ export class AudienceService {
       .countDocuments()
       .exec();
 
-    return { total_fixed, total_postponed, total_canceled };
+    return { total_fixed, total_postponed, total_canceled, total_missed, total_closed };
   }
 }
