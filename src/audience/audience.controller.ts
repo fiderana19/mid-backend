@@ -164,4 +164,17 @@ export class AudienceController {
       audi,
     );
   }
+
+  //Close audience
+  @Patch('/close/:id')
+  async closeAudience(@Param('id') id: string) {
+    return this.audienceService.closeAudience(id);
+  }
+
+  //Missed audience
+  @Patch('/missed/:id')
+  async missedAudience(@Param('id') id: string) {
+    return this.audienceService.missingAudience(id);
+  }
+
 }

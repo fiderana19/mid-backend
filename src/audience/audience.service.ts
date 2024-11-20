@@ -31,6 +31,7 @@ export class AudienceService {
       .populate('availability', '_id date_availability hour_debut hour_end')
       .populate('request', '_id object request_creation type_request')
       .exec();
+
     return mapAudience(audiences);
   }
 
@@ -46,7 +47,12 @@ export class AudienceService {
       .populate('availability', '_id date_availability hour_debut hour_end')
       .populate('request', '_id object request_creation type_request')
       .exec();
-    return mapSingleAudience(audiences);
+
+    if(audiences) {
+      return mapSingleAudience(audiences);
+    } else {
+      return audiences;
+    }
   }
 
   async getAudiencebyId(id: string) {
@@ -232,6 +238,20 @@ export class AudienceService {
     console.log(id);
     await this.audienceModel
       .findByIdAndUpdate(id, { status_audience: AudienceStatus.Canceled })
+      .exec();
+  }
+
+  //Change status to closed
+  async closeAudience(id: string) {
+    return await this.audienceModel
+      .findByIdAndUpdate(id, { status_audience: AudienceStatus.Closed })
+      .exec();
+  }
+
+  //Change status to missed
+  async missingAudience(id: string) {
+    return await this.audienceModel
+      .findByIdAndUpdate(id, { status_audience: AudienceStatus.Missed })
       .exec();
   }
 
