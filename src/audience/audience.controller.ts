@@ -5,6 +5,7 @@ import { AvailabilityService } from 'src/availability/availability.service';
 import { AuthService } from 'src/auth/auth.service';
 import { RequestService } from 'src/request/request.service';
 import { ReportAudienceDto } from 'src/dto/report-audience.dto';
+import { SearchAudienceDto } from 'src/dto/search-audience.dto';
 
 @Controller('audience')
 export class AudienceController {
@@ -49,6 +50,12 @@ export class AudienceController {
   @Get('/chart')
   async getAudienceForChart() {
     return await this.audienceService.getAudienceForChart();
+  }
+
+  //Search audience
+  @Post('/search')
+  async searchAudienceBetweenDates(@Body() searchAudienceDto: SearchAudienceDto) {
+    return await this.audienceService.getSearchAudience(searchAudienceDto);
   }
 
   //Count audience by status

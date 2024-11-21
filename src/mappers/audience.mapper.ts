@@ -17,6 +17,9 @@ export const mapAudience = (audiences: any) => {
     availability_date: audience.availability
       ? formatDate(audience.availability.date_availability)
       : '',
+    date_availability: audience.availability
+      ? audience.availability.date_availability
+      : '',
     availability_hour_debut: audience.availability
       ? formatTime(audience.availability.hour_debut)
       : '',

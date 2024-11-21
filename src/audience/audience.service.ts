@@ -11,6 +11,8 @@ import { setOrganizeAudienceMail } from 'src/utils/setOrganiseAudienceMail';
 import { setCancelAudienceMail } from 'src/utils/setCancelAudienceMail';
 import { ReportAudienceDto } from 'src/dto/report-audience.dto';
 import { setReportAudienceMail } from 'src/utils/setReportAudienceMail';
+import { SearchAudienceDto } from 'src/dto/search-audience.dto';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class AudienceService {
@@ -53,6 +55,37 @@ export class AudienceService {
     } else {
       return audiences;
     }
+  }
+
+  //Search audience between dates
+  async getSearchAudience(searchAudienceDto) {    
+    // Getting audience by status
+    const audiences = await this.audienceModel
+      .find({ status_audience: searchAudienceDto.status_audience})
+      .sort({ audience_creation: -1 })
+      .populate(
+        'user',
+        '_id nom prenom email cni profile_photo telephone adresse',
+      )
+      .populate('availability', '_id date_availability hour_debut hour_end')
+      .populate('request', '_id object request_creation type_request')
+      .exec();
+
+    // Mapping the audience
+    const audienceMapped = mapAudience(audiences);
+    // Creating a date const for dto
+    const debut = new Date(searchAudienceDto?.date_debut);
+    const end = new Date(searchAudienceDto?.date_end);
+    // Filtering the audience between dates
+    const filteredAudience: any = audienceMapped.filter((item: any) => {
+      const audience_date = new Date(item?.date_availability);
+      return (
+          audience_date >= debut && 
+          audience_date <= end
+      )            
+    }) 
+
+    return filteredAudience;
   }
 
   async getAudiencebyId(id: string) {
