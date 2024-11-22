@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AudienceService } from 'src/audience/audience.service';
@@ -55,6 +55,34 @@ export class AvailabilityService {
 
   //Create availability
   async createAvailability(createAvailabilityDto) {
+    const availabilities = await this.availabilityModel
+      .find()
+      .exec();
+    const debut = new Date(createAvailabilityDto?.hour_debut);
+    const end = new Date(createAvailabilityDto?.hour_end);  
+    const filtered: any = availabilities.filter((item: any) => {
+        const audience_date = new Date(item?.hour_debut);
+        console.log(audience_date)
+        return (
+            audience_date >= debut && 
+            audience_date <= end
+        )            
+      }) 
+    if(filtered.lenght > 0) {
+      throw new UnauthorizedException('Disponibilité déjà existant !');
+    }
+    const filtered2: any = availabilities.filter((item: any) => {
+      const audience_date = new Date(item?.hour_end);
+      console.log(audience_date)
+      return (
+          audience_date >= debut && 
+          audience_date <= end
+      )            
+    }) 
+    if(filtered2.lenght > 0) {
+      throw new UnauthorizedException('Disponibilité déjà existant !');
+    }
+    
     return await this.availabilityModel.create(createAvailabilityDto);
   }
 
