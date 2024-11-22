@@ -35,6 +35,8 @@ export const mapSingleRequest = (request: any) => {
     object: request.object,
     date_wanted_debut: formatDate(request.date_wanted_debut),
     date_wanted_end: formatDate(request.date_wanted_end),
+    wanted_debut: request.date_wanted_debut,
+    wanted_end: request.date_wanted_end,
     request_creation: formatDate(request.request_creation),
     status_request: request.status_request,
     debut_initial: request.date_wanted_debut,

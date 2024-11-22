@@ -165,6 +165,14 @@ export class AuthService {
   }
 
   //Get User by id
+  async checkUserFirstLogin(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    const first_login = user.is_not_first_login;
+
+    return { first_login };
+  }
+
+  //Get User by id
   async getUserById(id: string) {
     const user = await this.userModel.findById(id).exec();
     return mapSingleUser(user);

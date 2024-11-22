@@ -50,6 +50,12 @@ export class AuthController {
     return await this.authService.getUserById(id);
   }
 
+  //Get user first login by id
+  @Get('/firstlogin/:id')
+  async checkUserFirstLogin(@Param('id') id: string) {
+    return await this.authService.checkUserFirstLogin(id);
+  }
+
   @Get('/chart')
   async countUserForChart() {
     return await this.authService.countUserStat();
