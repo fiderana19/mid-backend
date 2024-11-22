@@ -52,6 +52,17 @@ export class AuthService {
       lieu_cni,
     } = signUpDto;
 
+    const user_mail = await this.userModel.findOne({email});
+    //If the user exist
+    if (user_mail) {
+      throw new UnauthorizedException('Un compte est déjà inscrit sur cet email !');
+    }
+    const user_cni = await this.userModel.findOne({cni});
+    //If the user exist
+    if (user_cni) {
+      throw new UnauthorizedException('Un compte est déjà inscrit sur ce numero de CIN !');
+    }
+
     // Converting nom to uppercase
     const nom2uppercase = nom.toUpperCase();
     //Generating random password
