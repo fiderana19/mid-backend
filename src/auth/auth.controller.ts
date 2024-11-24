@@ -32,37 +32,47 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Get('/all')
-  // @Roles(Role.ADMIN)
-  // @UseGuards(AuthGuard(), RolesGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async getAll() {
     return await this.authService.getAuth();
   }
 
   //Get user by validation
   @Get('/validation/:validation')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async getUserByValidation(@Param('validation') validation: boolean) {
     return await this.authService.getUserByValidation(validation);
   }
 
   //Get user by id
   @Get('/get/:id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(AuthGuard(), RolesGuard)
   async getUserById(@Param('id') id: string) {
     return await this.authService.getUserById(id);
   }
 
   //Get user first login by id
   @Get('/firstlogin/:id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(AuthGuard(), RolesGuard)
   async checkUserFirstLogin(@Param('id') id: string) {
     return await this.authService.checkUserFirstLogin(id);
   }
 
   @Get('/chart')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async countUserForChart() {
     return await this.authService.countUserStat();
   }
 
   //Count user by validation
   @Get('/count/:validation')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async countUserByValidation(@Param('validation') validation: boolean) {
     return await this.authService.countUserByValidation(validation);
   }
@@ -104,6 +114,8 @@ export class AuthController {
 
   //Update user
   @Patch('/update/:id')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async updateUser(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -113,6 +125,8 @@ export class AuthController {
 
   //Update user password for first login
   @Patch('/first/password/:id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(AuthGuard(), RolesGuard)
   async initializePassword(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserPasswordForFirstLogin,
@@ -122,6 +136,8 @@ export class AuthController {
 
   //Update user password
   @Patch('/password/:id')
+  @Roles(Role.ADMIN,Role.USER)
+  @UseGuards(AuthGuard(), RolesGuard)
   async updateUserPassword(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserPassword,
@@ -131,18 +147,24 @@ export class AuthController {
 
   //Validate user
   @Patch('/validate/:id')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async validateUser(@Param('id') id: string) {
     return await this.authService.validateUser(id);
   }
 
   //Delete user
   @Delete('/delete/:id')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async deleteUser(@Param() param) {
     return await this.authService.deleteUser(param.id);
   }
 
   //Get latest user
   @Get('/latest/')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard(), RolesGuard)
   async getLatestUser() {
     return await this.authService.getLatestUser();
   }
