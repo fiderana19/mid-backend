@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import dayjs from 'dayjs';
 import { Model } from 'mongoose';
 import { AudienceService } from 'src/audience/audience.service';
 import { AvailabilityStatus } from 'src/enums/availability.enum';
@@ -8,6 +9,7 @@ import {
   mapSingleAvailability,
 } from 'src/mappers/availability.mapper';
 import { Availability } from 'src/schema/availability.schema';
+import { addHours, getTimeForCalcul } from '../utils/dateformatter';
 
 @Injectable()
 export class AvailabilityService {
@@ -61,25 +63,18 @@ export class AvailabilityService {
     const debut = new Date(createAvailabilityDto?.hour_debut);
     const end = new Date(createAvailabilityDto?.hour_end);  
     const filtered: any = availabilities.filter((item: any) => {
-        const audience_date = new Date(item?.hour_debut);
-        console.log(audience_date)
+        const audience_debut = new Date(item?.hour_debut);
+        const audience_end = new Date(item?.hour_end);
+        const audi_debut = addHours(audience_debut,3);
+        const audi_end = addHours(audience_end,3);
         return (
-            audience_date >= debut && 
-            audience_date <= end
+          (audi_debut <= debut && audi_end >= debut) ||
+          (audi_debut <= end && audi_end >= end) ||
+          (audi_debut >= debut && audi_debut <= end) ||
+          (audi_end >= debut && audi_end <= end)
         )            
       }) 
-    if(filtered.lenght > 0) {
-      throw new UnauthorizedException('Disponibilité déjà existant !');
-    }
-    const filtered2: any = availabilities.filter((item: any) => {
-      const audience_date = new Date(item?.hour_end);
-      console.log(audience_date)
-      return (
-          audience_date >= debut && 
-          audience_date <= end
-      )            
-    }) 
-    if(filtered2.lenght > 0) {
+    if(filtered.length > 0) {
       throw new UnauthorizedException('Disponibilité déjà existant !');
     }
     
