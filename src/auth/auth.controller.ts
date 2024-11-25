@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -19,12 +18,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { ValidateUserDto } from 'src/dto/validate-user.dto';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import {
   FileFieldsInterceptor,
-  FileInterceptor,
 } from '@nestjs/platform-express';
 
 @Controller('auth')

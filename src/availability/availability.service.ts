@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import dayjs from 'dayjs';
 import { Model } from 'mongoose';
 import { AudienceService } from 'src/audience/audience.service';
 import { AvailabilityStatus } from 'src/enums/availability.enum';
@@ -9,7 +8,7 @@ import {
   mapSingleAvailability,
 } from 'src/mappers/availability.mapper';
 import { Availability } from 'src/schema/availability.schema';
-import { addHours, getTimeForCalcul } from '../utils/dateformatter';
+import { addHours } from '../utils/dateformatter';
 
 @Injectable()
 export class AvailabilityService {
@@ -34,20 +33,21 @@ export class AvailabilityService {
   //Get all free availbility
   async getAllFreeAvailability(): Promise<Availability[]> {
     const ava = await this.availabilityModel.find({
-      status_availability: 'Libre',
+      status_availability: AvailabilityStatus.Available,
     });
     return mapAvailability(ava);
   }
 
   //Change availability status
-  async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto) {
-    console.log(updateAvailabilityStatusDto);
-    if (updateAvailabilityStatusDto.status_availability === 'Annulé') {
-      await this.audienceService.cancelAudience(id);
+  async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto,usr,ava,req,audi) {
+    if (updateAvailabilityStatusDto.status_availability === AvailabilityStatus.Canceled) {
+      if(usr && ava && req && audi) {
+        await this.audienceService.treatAudience(audi,usr,req,ava);
+      }
     }
-    return await this.availabilityModel
-      .findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true })
-      .exec();
+    // return await this.availabilityModel
+    //   .findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true })
+    //   .exec();
   }
 
   //Get availbility by id
@@ -60,8 +60,10 @@ export class AvailabilityService {
     const availabilities = await this.availabilityModel
       .find()
       .exec();
+      // Initializing value for condition
     const debut = new Date(createAvailabilityDto?.hour_debut);
     const end = new Date(createAvailabilityDto?.hour_end);  
+    // Filtering
     const filtered: any = availabilities.filter((item: any) => {
         const audience_debut = new Date(item?.hour_debut);
         const audience_end = new Date(item?.hour_end);
@@ -74,6 +76,7 @@ export class AvailabilityService {
           (audi_end >= debut && audi_end <= end)
         )            
       }) 
+    // Returning error if condition verified
     if(filtered.length > 0) {
       throw new UnauthorizedException('Disponibilité déjà existant !');
     }

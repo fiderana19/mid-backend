@@ -15,10 +15,25 @@ import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { Audience } from 'src/schema/audience.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Request } from 'src/schema/request.schema';
+import { User } from 'src/schema/user.schema';
+import { AudienceService } from 'src/audience/audience.service';
+import { AuthService } from 'src/auth/auth.service';
+import { RequestService } from 'src/request/request.service';
 
 @Controller('availability')
 export class AvailabilityController {
-  constructor(private availabilityService: AvailabilityService) {}
+  constructor(
+    private availabilityService: AvailabilityService,
+    private audienceService: AudienceService,
+    private userService: AuthService,
+    private requestService: RequestService,
+    @InjectModel(Audience.name)
+    private audienceModel: Model<Audience>,
+  ) {}
 
   //Get all availability
   @Get('/all')
@@ -54,10 +69,36 @@ export class AvailabilityController {
     @Param('id') id: string,
     @Body() treatRequestDto: UpdateAvailabilityDto,
   ) {
-    return await this.availabilityService.updateAvailabilityStatus(
-      id,
-      treatRequestDto,
-    );
+    const ava = await this.availabilityService.getAvailabilityById(id);
+    const audience = await this.audienceService.getAudienceByAvailability(id);
+    if(audience) {
+      const audi = String(audience._id);
+      const request = String(audience.request);
+      const user = String(audience.user);
+      const usr = await this.userService.getUserByIdForMailing(user);
+      const req = await this.requestService.getRequestById(request); 
+      
+      return await this.availabilityService.updateAvailabilityStatus(
+        id,
+        treatRequestDto,
+        usr,
+        ava,
+        req,
+        audi
+      );
+    } else {
+      const usr = '';
+      const req = '';
+      const audi = '';
+      return await this.availabilityService.updateAvailabilityStatus(
+        id,
+        treatRequestDto,
+        usr,
+        ava,
+        req,
+        audi
+      );  
+    }
   }
 
   //Get availability by id

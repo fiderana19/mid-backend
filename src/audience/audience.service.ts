@@ -1,5 +1,5 @@
 import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AudienceStatus } from 'src/enums/audiencestatus.enum';
@@ -11,8 +11,6 @@ import { setOrganizeAudienceMail } from 'src/utils/setOrganiseAudienceMail';
 import { setCancelAudienceMail } from 'src/utils/setCancelAudienceMail';
 import { ReportAudienceDto } from 'src/dto/report-audience.dto';
 import { setReportAudienceMail } from 'src/utils/setReportAudienceMail';
-import { SearchAudienceDto } from 'src/dto/search-audience.dto';
-import dayjs from 'dayjs';
 
 @Injectable()
 export class AudienceService {
@@ -195,6 +193,11 @@ export class AudienceService {
       hour_end,
     );
 
+    const audi_status = await this.audienceModel.findById(id).exec();
+    if(audi_status.status_audience[0] === AudienceStatus.Closed || audi_status.status_audience[0] === AudienceStatus.Missed) {
+      throw new UnauthorizedException("L'audience correspondant ne peut plus être annulée !");
+    }
+
     // Updating audience
     const response = await this.audienceModel
       .findByIdAndUpdate(
@@ -230,6 +233,11 @@ export class AudienceService {
   //Get audience by status
   async getAudienceByStatus(status_audience) {
     return await this.audienceModel.find({ status_audience }).exec();
+  }
+
+  //Get audience by availability
+  async getAudienceByAvailability(availability) {
+    return await this.audienceModel.findOne({ availability }).exec();
   }
 
   //Count audience by status

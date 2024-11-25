@@ -9,6 +9,11 @@ import {
 } from 'src/schema/availability.schema';
 import { AudienceService } from 'src/audience/audience.service';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
+import { Request, RequestSchema } from 'src/schema/request.schema';
+import { User, UserSchema } from 'src/schema/user.schema';
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from 'src/auth/auth.service';
+import { RequestService } from 'src/request/request.service';
 
 @Module({
   imports: [
@@ -16,10 +21,18 @@ import { Audience, AudienceSchema } from 'src/schema/audience.schema';
     MongooseModule.forFeature([
       { name: Availability.name, schema: AvailabilitySchema },
       { name: Audience.name, schema: AudienceSchema },
+      { name: Request.name, schema: RequestSchema },
+      { name: User.name, schema: UserSchema },
     ]),
   ],
   controllers: [AvailabilityController],
-  providers: [AvailabilityService, AudienceService],
+  providers: [
+    AudienceService,
+    AvailabilityService,
+    RequestService,
+    AuthService,
+    JwtService,
+  ],
   exports: [AvailabilityService],
 })
 export class AvailabilityModule {}
