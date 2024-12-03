@@ -40,7 +40,7 @@ export class RequestController {
 
   //Create request
   @Post('/create')
-  @Roles(Role.USER,Role.ADMIN)
+  @Roles(Role.USER, Role.ADMIN)
   @UseGuards(AuthGuard(), RolesGuard)
   async createRequest(@Body() createRequestDto: CreateRequestDto, @Req() req) {
     return await this.requestService.createRequest(createRequestDto, req.user);
@@ -48,7 +48,7 @@ export class RequestController {
 
   //Get request by user
   @Get('/get/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async getRequestById(@Param('id') id: string) {
     return await this.requestService.getRequestById(id);
@@ -56,7 +56,7 @@ export class RequestController {
 
   //Get request by user
   @Get('/user/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async getRequestByUser(@Param('id') id: string) {
     return await this.requestService.getRequestByUser(id);
@@ -118,7 +118,7 @@ export class RequestController {
 
   //Update request
   @Patch('/update/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async updateRequest(
     @Param('id') id: string,
@@ -129,7 +129,7 @@ export class RequestController {
 
   //Delete request
   @Delete('/delete/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async deleteRequest(@Param('id') id: string) {
     return await this.requestService.deleteRequest(id);

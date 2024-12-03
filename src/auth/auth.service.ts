@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UpdateUserDto } from 'src/dto/update-user.dto';
@@ -52,15 +56,19 @@ export class AuthService {
       lieu_cni,
     } = signUpDto;
 
-    const user_mail = await this.userModel.findOne({email});
+    const user_mail = await this.userModel.findOne({ email });
     //If the user exist
     if (user_mail) {
-      throw new UnauthorizedException('Un compte est déjà inscrit sur cet email !');
+      throw new UnauthorizedException(
+        'Un compte est déjà inscrit sur cet email !',
+      );
     }
-    const user_cni = await this.userModel.findOne({cni});
+    const user_cni = await this.userModel.findOne({ cni });
     //If the user exist
     if (user_cni) {
-      throw new UnauthorizedException('Un compte est déjà inscrit sur ce numero de CIN !');
+      throw new UnauthorizedException(
+        'Un compte est déjà inscrit sur ce numero de CIN !',
+      );
     }
 
     // Converting nom to uppercase
@@ -70,6 +78,7 @@ export class AuthService {
     // Hashing the password
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     const hashedReal = hashedPassword.toString();
+
     // Creating the user
     await this.userModel.create({
       nom: nom2uppercase,

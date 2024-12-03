@@ -11,7 +11,10 @@ import { Audience, AudienceSchema } from 'src/schema/audience.schema';
   imports: [
     MailingModule,
     AuthModule,
-    MongooseModule.forFeature([{ name: Request.name, schema: RequestSchema },{ name: Audience.name, schema: AudienceSchema },]),
+    MongooseModule.forFeature([
+      { name: Request.name, schema: RequestSchema },
+      { name: Audience.name, schema: AudienceSchema },
+    ]),
   ],
   controllers: [RequestController],
   providers: [RequestService],

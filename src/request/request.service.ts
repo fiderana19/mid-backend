@@ -38,14 +38,15 @@ export class RequestService {
   async getNotOrganizedRequest(): Promise<any> {
     const requests = await this.audienceModel.distinct('request');
 
-    const response = await this.requestModel.find({
-      status_request: RequestStatus.Accepted,
-      _id: { $nin: requests },
-    })
-    .populate(
-      'user',
-      '_id nom prenom cni adresse email telephone profile_photo',
-    );
+    const response = await this.requestModel
+      .find({
+        status_request: RequestStatus.Accepted,
+        _id: { $nin: requests },
+      })
+      .populate(
+        'user',
+        '_id nom prenom cni adresse email telephone profile_photo',
+      );
 
     return mapRequest(response);
   }

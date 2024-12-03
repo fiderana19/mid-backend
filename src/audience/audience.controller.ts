@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AudienceService } from './audience.service';
 import { CreateAudienceDto } from 'src/dto/create-audience.dto';
 import { AvailabilityService } from 'src/availability/availability.service';
@@ -46,7 +54,7 @@ export class AudienceController {
 
   //Get audience by id
   @Get('/get/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async getAudienceById(@Param('id') id: string) {
     return await this.audienceService.getAudiencebyId(id);
@@ -72,7 +80,9 @@ export class AudienceController {
   @Post('/search')
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard(), RolesGuard)
-  async searchAudienceBetweenDates(@Body() searchAudienceDto: SearchAudienceDto) {
+  async searchAudienceBetweenDates(
+    @Body() searchAudienceDto: SearchAudienceDto,
+  ) {
     return await this.audienceService.getSearchAudience(searchAudienceDto);
   }
 
@@ -96,7 +106,7 @@ export class AudienceController {
 
   //Get a user's audience
   @Get('/user/:user')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async getAudienceByUser(@Param('user') user: string) {
     return await this.audienceService.getAudienceByUser(user);
@@ -219,5 +229,4 @@ export class AudienceController {
   async missedAudience(@Param('id') id: string) {
     return this.audienceService.missingAudience(id);
   }
-
 }

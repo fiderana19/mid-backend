@@ -39,10 +39,20 @@ export class AvailabilityService {
   }
 
   //Change availability status
-  async updateAvailabilityStatus(id: string, updateAvailabilityStatusDto,usr,ava,req,audi) {
-    if (updateAvailabilityStatusDto.status_availability === AvailabilityStatus.Canceled) {
-      if(usr && ava && req && audi) {
-        await this.audienceService.treatAudience(audi,usr,req,ava);
+  async updateAvailabilityStatus(
+    id: string,
+    updateAvailabilityStatusDto,
+    usr,
+    ava,
+    req,
+    audi,
+  ) {
+    if (
+      updateAvailabilityStatusDto.status_availability ===
+      AvailabilityStatus.Canceled
+    ) {
+      if (usr && ava && req && audi) {
+        await this.audienceService.treatAudience(audi, usr, req, ava);
       }
     }
     // return await this.availabilityModel
@@ -57,30 +67,28 @@ export class AvailabilityService {
 
   //Create availability
   async createAvailability(createAvailabilityDto) {
-    const availabilities = await this.availabilityModel
-      .find()
-      .exec();
-      // Initializing value for condition
+    const availabilities = await this.availabilityModel.find().exec();
+    // Initializing value for condition
     const debut = new Date(createAvailabilityDto?.hour_debut);
-    const end = new Date(createAvailabilityDto?.hour_end);  
+    const end = new Date(createAvailabilityDto?.hour_end);
     // Filtering
     const filtered: any = availabilities.filter((item: any) => {
-        const audience_debut = new Date(item?.hour_debut);
-        const audience_end = new Date(item?.hour_end);
-        const audi_debut = addHours(audience_debut,3);
-        const audi_end = addHours(audience_end,3);
-        return (
-          (audi_debut <= debut && audi_end >= debut) ||
-          (audi_debut <= end && audi_end >= end) ||
-          (audi_debut >= debut && audi_debut <= end) ||
-          (audi_end >= debut && audi_end <= end)
-        )            
-      }) 
+      const audience_debut = new Date(item?.hour_debut);
+      const audience_end = new Date(item?.hour_end);
+      const audi_debut = addHours(audience_debut, 3);
+      const audi_end = addHours(audience_end, 3);
+      return (
+        (audi_debut <= debut && audi_end >= debut) ||
+        (audi_debut <= end && audi_end >= end) ||
+        (audi_debut >= debut && audi_debut <= end) ||
+        (audi_end >= debut && audi_end <= end)
+      );
+    });
     // Returning error if condition verified
-    if(filtered.length > 0) {
+    if (filtered.length > 0) {
       throw new UnauthorizedException('Disponibilité déjà existant !');
     }
-    
+
     return await this.availabilityModel.create(createAvailabilityDto);
   }
 

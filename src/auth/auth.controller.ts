@@ -20,9 +20,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
-import {
-  FileFieldsInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -45,7 +43,7 @@ export class AuthController {
 
   //Get user by id
   @Get('/get/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async getUserById(@Param('id') id: string) {
     return await this.authService.getUserById(id);
@@ -53,7 +51,7 @@ export class AuthController {
 
   //Get user first login by id
   @Get('/firstlogin/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async checkUserFirstLogin(@Param('id') id: string) {
     return await this.authService.checkUserFirstLogin(id);
@@ -122,7 +120,7 @@ export class AuthController {
 
   //Update user password for first login
   @Patch('/first/password/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async initializePassword(
     @Param('id') id: string,
@@ -133,7 +131,7 @@ export class AuthController {
 
   //Update user password
   @Patch('/password/:id')
-  @Roles(Role.ADMIN,Role.USER)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async updateUserPassword(
     @Param('id') id: string,

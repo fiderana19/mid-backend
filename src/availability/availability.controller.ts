@@ -71,20 +71,20 @@ export class AvailabilityController {
   ) {
     const ava = await this.availabilityService.getAvailabilityById(id);
     const audience = await this.audienceService.getAudienceByAvailability(id);
-    if(audience) {
+    if (audience) {
       const audi = String(audience._id);
       const request = String(audience.request);
       const user = String(audience.user);
       const usr = await this.userService.getUserByIdForMailing(user);
-      const req = await this.requestService.getRequestById(request); 
-      
+      const req = await this.requestService.getRequestById(request);
+
       return await this.availabilityService.updateAvailabilityStatus(
         id,
         treatRequestDto,
         usr,
         ava,
         req,
-        audi
+        audi,
       );
     } else {
       const usr = '';
@@ -96,8 +96,8 @@ export class AvailabilityController {
         usr,
         ava,
         req,
-        audi
-      );  
+        audi,
+      );
     }
   }
 

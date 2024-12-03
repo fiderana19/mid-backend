@@ -48,7 +48,7 @@ export class AudienceService {
       .populate('request', '_id object request_creation type_request')
       .exec();
 
-    if(audiences) {
+    if (audiences) {
       return mapSingleAudience(audiences);
     } else {
       return audiences;
@@ -56,10 +56,10 @@ export class AudienceService {
   }
 
   //Search audience between dates
-  async getSearchAudience(searchAudienceDto) {    
+  async getSearchAudience(searchAudienceDto) {
     // Getting audience by status
     const audiences = await this.audienceModel
-      .find({ status_audience: searchAudienceDto.status_audience})
+      .find({ status_audience: searchAudienceDto.status_audience })
       .sort({ audience_creation: -1 })
       .populate(
         'user',
@@ -77,11 +77,8 @@ export class AudienceService {
     // Filtering the audience between dates
     const filteredAudience: any = audienceMapped.filter((item: any) => {
       const audience_date = new Date(item?.date_availability);
-      return (
-          audience_date >= debut && 
-          audience_date <= end
-      )            
-    }) 
+      return audience_date >= debut && audience_date <= end;
+    });
 
     return filteredAudience;
   }
@@ -194,8 +191,13 @@ export class AudienceService {
     );
 
     const audi_status = await this.audienceModel.findById(id).exec();
-    if(audi_status.status_audience[0] === AudienceStatus.Closed || audi_status.status_audience[0] === AudienceStatus.Missed) {
-      throw new UnauthorizedException("L'audience correspondant ne peut plus être annulée !");
+    if (
+      audi_status.status_audience[0] === AudienceStatus.Closed ||
+      audi_status.status_audience[0] === AudienceStatus.Missed
+    ) {
+      throw new UnauthorizedException(
+        "L'audience correspondant ne peut plus être annulée !",
+      );
     }
 
     // Updating audience
@@ -363,9 +365,9 @@ export class AudienceService {
   //Get request for chart
   async getAudienceForChart() {
     const total_closed = await this.audienceModel
-    .find({ status_audience: AudienceStatus.Closed })
-    .countDocuments()
-    .exec();
+      .find({ status_audience: AudienceStatus.Closed })
+      .countDocuments()
+      .exec();
     const total_missed = await this.audienceModel
       .find({ status_audience: AudienceStatus.Missed })
       .countDocuments()
@@ -383,6 +385,12 @@ export class AudienceService {
       .countDocuments()
       .exec();
 
-    return { total_fixed, total_postponed, total_canceled, total_missed, total_closed };
+    return {
+      total_fixed,
+      total_postponed,
+      total_canceled,
+      total_missed,
+      total_closed,
+    };
   }
 }
