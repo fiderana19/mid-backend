@@ -26,6 +26,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // Get all user
   @Get('/all')
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard(), RolesGuard)
@@ -57,6 +58,7 @@ export class AuthController {
     return await this.authService.checkUserFirstLogin(id);
   }
 
+  // Get user for chart
   @Get('/chart')
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard(), RolesGuard)

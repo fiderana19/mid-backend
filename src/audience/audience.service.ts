@@ -83,6 +83,7 @@ export class AudienceService {
     return filteredAudience;
   }
 
+  // Getting an audience by id
   async getAudiencebyId(id: string) {
     const audience = await this.audienceModel
       .findById(id)
@@ -99,6 +100,7 @@ export class AudienceService {
     return mapSingleAudience(audience);
   }
 
+  // Getting an audience by ref
   async getAudienceByRef(ref_audience: string) {
     const audience = await this.audienceModel
       .findOne({ ref_audience })
@@ -298,6 +300,7 @@ export class AudienceService {
       .exec();
   }
 
+  // Report an audience
   async reportAudience(
     id: string,
     reportAudienceDto: ReportAudienceDto,
@@ -332,7 +335,7 @@ export class AudienceService {
       qrCodeDataToURL,
     );
 
-    //Report audience
+    //Reporting the audience
     const response = await this.audienceModel
       .findByIdAndUpdate(
         id,
@@ -362,7 +365,7 @@ export class AudienceService {
     return response;
   }
 
-  //Get request for chart
+  //Getting audience for chart
   async getAudienceForChart() {
     const total_closed = await this.audienceModel
       .find({ status_audience: AudienceStatus.Closed })

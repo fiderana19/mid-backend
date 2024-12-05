@@ -308,6 +308,7 @@ export class AuthService {
     return response;
   }
 
+  // Counting user stat for dahsboard
   async countUserStat() {
     const total_user = await this.userModel
       .find({ roles: 'user' })

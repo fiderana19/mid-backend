@@ -55,9 +55,9 @@ export class AvailabilityService {
         await this.audienceService.treatAudience(audi, usr, req, ava);
       }
     }
-    // return await this.availabilityModel
-    //   .findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true })
-    //   .exec();
+    return await this.availabilityModel
+      .findByIdAndUpdate(id, updateAvailabilityStatusDto, { new: true })
+      .exec();
   }
 
   //Get availbility by id
