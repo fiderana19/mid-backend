@@ -280,7 +280,6 @@ export class AudienceService {
   async cancelAudience(availability: string) {
     const audi = await this.audienceModel.find({ availability }).exec();
     const id = audi[0]._id;
-    console.log(id);
     await this.audienceModel
       .findByIdAndUpdate(id, { status_audience: AudienceStatus.Canceled })
       .exec();
