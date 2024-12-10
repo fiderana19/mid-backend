@@ -56,18 +56,27 @@ export class AuthService {
       lieu_cni,
     } = signUpDto;
 
-    const user_mail = await this.userModel.findOne({ email });
+    const user_telephone = await this.userModel.findOne({ telephone });
     //If the user exist
-    if (user_mail) {
+    if (user_telephone) {
       throw new UnauthorizedException(
-        'Un compte est déjà inscrit sur cet email !',
+        'Un compte est déjà inscrit sur ce numero de telephone !',
       );
     }
+
     const user_cni = await this.userModel.findOne({ cni });
     //If the user exist
     if (user_cni) {
       throw new UnauthorizedException(
         'Un compte est déjà inscrit sur ce numero de CIN !',
+      );
+    }
+
+    const user_mail = await this.userModel.findOne({ email });
+    //If the user exist
+    if (user_mail) {
+      throw new UnauthorizedException(
+        'Un compte est déjà inscrit sur cet email !',
       );
     }
 
