@@ -25,6 +25,7 @@ export class RequestService {
   async getRequest(): Promise<any> {
     const req = await this.requestModel
       .find()
+      .sort({ request_creation: -1 })
       .populate(
         'user',
         '_id nom prenom cni adresse email telephone profile_photo',
@@ -43,6 +44,7 @@ export class RequestService {
         status_request: RequestStatus.Accepted,
         _id: { $nin: requests },
       })
+      .sort({ request_creation: -1 })
       .populate(
         'user',
         '_id nom prenom cni adresse email telephone profile_photo',

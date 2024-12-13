@@ -24,6 +24,7 @@ export class AudienceService {
   async getAllAudience() {
     const audiences = await this.audienceModel
       .find()
+      .sort({ audience_creation: -1 })
       .populate(
         'user',
         '_id nom prenom email cni telephone adresse profile_photo',
