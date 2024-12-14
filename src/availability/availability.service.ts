@@ -20,7 +20,7 @@ export class AvailabilityService {
 
   //Get all availbility
   async getAllAvailability(): Promise<Availability[]> {
-    const ava = await this.availabilityModel.find();
+    const ava = await this.availabilityModel.find().sort({ date_availability: -1 });
     return mapAvailability(ava);
   }
 
