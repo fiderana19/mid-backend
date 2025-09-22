@@ -157,21 +157,21 @@ export class AudienceService {
       user,
     });
 
-    // Sending mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Invitation pour une audience',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    //Sending mail
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Invitation pour une audience',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
 
     return response;
   }
@@ -212,20 +212,20 @@ export class AudienceService {
       )
       .exec();
     // Sending mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Audience annulée',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Audience annulée',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
 
     return response;
   }
@@ -348,20 +348,20 @@ export class AudienceService {
       .exec();
 
     // Sending mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Audience reportée',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Audience reportée',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
     return response;
   }
 

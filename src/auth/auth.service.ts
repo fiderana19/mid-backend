@@ -108,20 +108,20 @@ export class AuthService {
     const mailBody = setInscriptionMail(nom, prenom, randomPassword);
 
     // Sending email
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Inscription réussie',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Inscription réussie',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
 
     return {
       message: 'Les informations sont envoyés avec succés',
@@ -175,20 +175,20 @@ export class AuthService {
       .exec();
 
     // Sending mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Compte validé',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Compte validé',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
 
     return response;
   }
@@ -299,20 +299,20 @@ export class AuthService {
     // Deleting the user
     const response = await this.userModel.findByIdAndDelete(id).exec();
     // Sending mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Compte supprimé',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Compte supprimé',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
 
     return response;
   }

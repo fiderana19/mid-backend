@@ -123,20 +123,20 @@ export class RequestService {
       .exec();
 
     // Sending mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Demande approuvée',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Demande approuvée',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
 
     return response;
   }
@@ -173,20 +173,20 @@ export class RequestService {
       .findByIdAndUpdate(id, treatRequestDto, { new: true })
       .exec();
     // Seding mail
-    await this.mailerService.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'MININTER/AUDIENCE: Demande réfusée',
-      html: mailBody,
-      attachDataUrls: true,
-      attachments: [
-        {
-          filename: 'mid-logo.jpg',
-          path: '../mid-backend/src/assets/mid-logo.jpg',
-          cid: 'mid',
-        },
-      ],
-    });
+    // await this.mailerService.sendMail({
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: 'MININTER/AUDIENCE: Demande réfusée',
+    //   html: mailBody,
+    //   attachDataUrls: true,
+    //   attachments: [
+    //     {
+    //       filename: 'mid-logo.jpg',
+    //       path: '../mid-backend/src/assets/mid-logo.jpg',
+    //       cid: 'mid',
+    //     },
+    //   ],
+    // });
     return response;
   }
 
