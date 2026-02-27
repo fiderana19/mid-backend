@@ -10,6 +10,7 @@ import { User } from 'src/schema/user.schema';
 import { formatDate } from 'src/utils/dateformatter';
 import { setDenyRequestMail } from 'src/utils/setDenyRequestMail';
 import { setRequestApprovalMail } from 'src/utils/setRequestApprovalMail';
+import { RequestGateway } from './request.gateway';
 
 @Injectable()
 export class RequestService {
@@ -18,6 +19,7 @@ export class RequestService {
     private requestModel: Model<Request>,
     @InjectModel(Audience.name)
     private audienceModel: Model<Audience>,
+    private requestGateway: RequestGateway,
     private mailerService: MailerService,
   ) {}
 
@@ -70,7 +72,9 @@ export class RequestService {
   async createRequest(createRequestDto, user: User) {
     const data = Object.assign(createRequestDto, { user: user._id });
 
-    return await this.requestModel.create(data);
+    const res = await this.requestModel.create(data);
+    this.requestGateway.handleCreateRequest(res);
+    return res;
   }
 
   //Get request by user

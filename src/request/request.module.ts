@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { RequestController } from './request.controller';
 import { RequestService } from './request.service';
 import { AuthModule } from 'src/auth/auth.module';
@@ -6,7 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Request, RequestSchema } from 'src/schema/request.schema';
 import { MailingModule } from 'src/mailing/mailing.module';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
+import { RequestGateway } from './request.gateway';
 
+@Global()
 @Module({
   imports: [
     MailingModule,
@@ -17,7 +19,7 @@ import { Audience, AudienceSchema } from 'src/schema/audience.schema';
     ]),
   ],
   controllers: [RequestController],
-  providers: [RequestService],
-  exports: [RequestService, RequestModule],
+  providers: [RequestService, RequestGateway],
+  exports: [RequestService, RequestModule, RequestGateway],
 })
 export class RequestModule {}

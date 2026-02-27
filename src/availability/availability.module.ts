@@ -14,10 +14,12 @@ import { User, UserSchema } from 'src/schema/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from 'src/auth/auth.service';
 import { RequestService } from 'src/request/request.service';
+import { RequestModule } from 'src/request/request.module';
 
 @Module({
   imports: [
     AuthModule,
+    RequestModule,
     MongooseModule.forFeature([
       { name: Availability.name, schema: AvailabilitySchema },
       { name: Audience.name, schema: AudienceSchema },

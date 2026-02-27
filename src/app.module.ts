@@ -18,8 +18,8 @@ import { MailingModule } from './mailing/mailing.module';
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
     AudienceModule,
-    RequestModule,
     AvailabilityModule,
+    RequestModule,
     MailingModule,
   ],
   providers: [
