@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AudienceController } from './audience.controller';
 import { AudienceService } from './audience.service';
 import { AuthModule } from 'src/auth/auth.module';
@@ -15,7 +15,9 @@ import { Request, RequestSchema } from 'src/schema/request.schema';
 import { RequestService } from 'src/request/request.service';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
+import { AudienceGateway } from './audience.gateway';
 
+@Global()
 @Module({
   imports: [
     MailingModule,
@@ -34,7 +36,8 @@ import { JwtService } from '@nestjs/jwt';
     RequestService,
     AuthService,
     JwtService,
+    AudienceGateway,
   ],
-  exports: [AudienceService],
+  exports: [AudienceService, AudienceGateway],
 })
 export class AudienceModule {}

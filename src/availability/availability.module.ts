@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AvailabilityController } from './availability.controller';
 import { AvailabilityService } from './availability.service';
 import { AuthModule } from 'src/auth/auth.module';
@@ -16,6 +16,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { RequestService } from 'src/request/request.service';
 import { RequestModule } from 'src/request/request.module';
 
+@Global()
 @Module({
   imports: [
     AuthModule,

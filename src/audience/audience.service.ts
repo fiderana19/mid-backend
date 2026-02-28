@@ -11,6 +11,7 @@ import { setOrganizeAudienceMail } from 'src/utils/setOrganiseAudienceMail';
 import { setCancelAudienceMail } from 'src/utils/setCancelAudienceMail';
 import { ReportAudienceDto } from 'src/dto/report-audience.dto';
 import { setReportAudienceMail } from 'src/utils/setReportAudienceMail';
+import { AudienceGateway } from './audience.gateway';
 
 @Injectable()
 export class AudienceService {
@@ -18,6 +19,7 @@ export class AudienceService {
     @InjectModel(Audience.name)
     private audienceModel: Model<Audience>,
     private mailerService: MailerService,
+    private audienceGateway: AudienceGateway,
   ) {}
 
   //Get all audience
@@ -172,7 +174,7 @@ export class AudienceService {
     //     },
     //   ],
     // });
-
+    this.audienceGateway.handleOrganizeAudience(response);
     return response;
   }
 
@@ -226,7 +228,7 @@ export class AudienceService {
     //     },
     //   ],
     // });
-
+    this.audienceGateway.handleTreateAudience(response);
     return response;
   }
 
@@ -288,16 +290,20 @@ export class AudienceService {
 
   //Change status to closed
   async closeAudience(id: string) {
-    return await this.audienceModel
+    const response = await this.audienceModel
       .findByIdAndUpdate(id, { status_audience: AudienceStatus.Closed })
       .exec();
+    this.audienceGateway.handleCloseAudience(response);
+    return response;
   }
 
   //Change status to missed
   async missingAudience(id: string) {
-    return await this.audienceModel
+    const response = await this.audienceModel
       .findByIdAndUpdate(id, { status_audience: AudienceStatus.Missed })
       .exec();
+    this.audienceGateway.handleMissedAudience(response);
+    return response;
   }
 
   // Report an audience
@@ -362,6 +368,7 @@ export class AudienceService {
     //     },
     //   ],
     // });
+    this.audienceGateway.handleReportAudience(response);
     return response;
   }
 
