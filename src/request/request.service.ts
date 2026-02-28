@@ -141,7 +141,7 @@ export class RequestService {
     //     },
     //   ],
     // });
-
+    this.requestGateway.handleAcceptRequest(response);
     return response;
   }
 
@@ -191,6 +191,7 @@ export class RequestService {
     //     },
     //   ],
     // });
+    this.requestGateway.handleDenyRequest(response);
     return response;
   }
 
@@ -202,9 +203,11 @@ export class RequestService {
       throw new UnauthorizedException('Ce demande est déjà approuvée');
     }
 
-    return await this.requestModel
+    const response = await this.requestModel
       .findByIdAndUpdate(id, updateRequestDto, { new: true })
       .exec();
+    this.requestGateway.handleUpdateRequest(response);
+    return response;
   }
 
   //Delete request
@@ -215,7 +218,9 @@ export class RequestService {
       throw new UnauthorizedException('Ce demande est déjà approuvée');
     }
 
-    return await this.requestModel.findByIdAndDelete(id).exec();
+    const response = await this.requestModel.findByIdAndDelete(id).exec();
+    this.requestGateway.handleDeleteRequest(response);
+    return response;
   }
 
   //Get request by status
