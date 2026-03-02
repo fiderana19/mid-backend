@@ -19,6 +19,7 @@ import { generateRandom6digits } from 'src/utils/generateRandom';
 import { setInscriptionMail } from 'src/utils/setIncriptionMail';
 import { setValidateAccountMail } from 'src/utils/setValidationAccountMail';
 import { setDeleteAccountMail } from 'src/utils/setDeleteAccountMail';
+import { AuthGateway } from './auth.gateway';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,7 @@ export class AuthService {
     private requestService: RequestService,
     private audienceService: AudienceService,
     private mailerService: MailerService,
+    private authGateway: AuthGateway,
   ) {}
 
   //Get all user
@@ -89,7 +91,7 @@ export class AuthService {
     const hashedReal = hashedPassword.toString();
 
     // Creating the user
-    await this.userModel.create({
+    const response = await this.userModel.create({
       nom: nom2uppercase,
       prenom,
       email,
@@ -122,7 +124,7 @@ export class AuthService {
     //     },
     //   ],
     // });
-
+    this.authGateway.handleSignup(response);
     return {
       message: 'Les informations sont envoyés avec succés',
       initialPwd: randomPassword,

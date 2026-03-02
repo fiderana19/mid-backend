@@ -12,6 +12,7 @@ import { RequestService } from 'src/request/request.service';
 import { AudienceService } from 'src/audience/audience.service';
 import { Audience, AudienceSchema } from 'src/schema/audience.schema';
 import { MailingModule } from '../mailing/mailing.module';
+import { AuthGateway } from './auth.gateway';
 
 @Global()
 @Module({
@@ -36,7 +37,7 @@ import { MailingModule } from '../mailing/mailing.module';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RequestService, AudienceService],
-  exports: [JwtStrategy, PassportModule],
+  providers: [AuthService, JwtStrategy, RequestService, AudienceService, AuthGateway],
+  exports: [JwtStrategy, PassportModule, AuthGateway],
 })
 export class AuthModule {}
