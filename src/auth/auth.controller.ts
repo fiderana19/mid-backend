@@ -21,6 +21,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-first-login.dto';
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -104,6 +105,7 @@ export class AuthController {
   }
 
   //Login
+  @Throttle({ default: { limit: 3, ttl: 1000 * 5 } })
   @Post('/login')
   async login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
     return await this.authService.login(loginDto);
