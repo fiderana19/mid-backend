@@ -8,12 +8,21 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/roles.guard';
 import { AvailabilityModule } from './availability/availability.module';
 import { MailingModule } from './mailing/mailing.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 1000 * 60,
+          limit: 10,
+        },
+      ],
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,
@@ -26,6 +35,10 @@ import { MailingModule } from './mailing/mailing.module';
     {
       provide: APP_GUARD,
       useClass: RolesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
     },
   ],
 })
