@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AvailabilityService } from './availability.service';
 import { CreateAvailabilityDto } from 'src/dto/create-availability.dto';
@@ -18,13 +19,13 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Audience } from 'src/schema/audience.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Request } from 'src/schema/request.schema';
-import { User } from 'src/schema/user.schema';
 import { AudienceService } from 'src/audience/audience.service';
 import { AuthService } from 'src/auth/auth.service';
 import { RequestService } from 'src/request/request.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('availability')
+@UseInterceptors(CacheInterceptor)
 export class AvailabilityController {
   constructor(
     private availabilityService: AvailabilityService,

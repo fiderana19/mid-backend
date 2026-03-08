@@ -22,8 +22,10 @@ import { UpdateUserPasswordForFirstLogin } from 'src/dto/update-user-password-fi
 import { UpdateUserPassword } from 'src/dto/update-user-paswword.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { Throttle } from '@nestjs/throttler';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('auth')
+@UseInterceptors(CacheInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 

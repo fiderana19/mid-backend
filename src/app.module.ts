@@ -9,6 +9,7 @@ import { RolesGuard } from './guards/roles.guard';
 import { AvailabilityModule } from './availability/availability.module';
 import { MailingModule } from './mailing/mailing.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -23,6 +24,10 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
           limit: 10,
         },
       ],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 1000 * 60,
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     AuthModule,

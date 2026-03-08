@@ -8,6 +8,7 @@ import {
   Post,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RequestService } from './request.service';
 import { CreateRequestDto } from 'src/dto/create-request.dto';
@@ -17,8 +18,10 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { UpdateRequestDto } from 'src/dto/update-request.dto';
 import { TreatRequestDto } from 'src/dto/treat-request.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('request')
+@UseInterceptors(CacheInterceptor)
 export class RequestController {
   constructor(private requestService: RequestService) {}
 

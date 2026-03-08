@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AudienceService } from './audience.service';
 import { CreateAudienceDto } from 'src/dto/create-audience.dto';
@@ -18,8 +19,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('audience')
+@UseInterceptors(CacheInterceptor)
 export class AudienceController {
   constructor(
     private audienceService: AudienceService,
@@ -70,7 +73,7 @@ export class AudienceController {
 
   //Get audience for chart
   @Get('/chart')
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.USER)
   @UseGuards(AuthGuard(), RolesGuard)
   async getAudienceForChart() {
     return await this.audienceService.getAudienceForChart();
